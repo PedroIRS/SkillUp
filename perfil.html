@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Perfil</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main class="perfilMain">
+        <section class="info">
+            <div class="profileInfos">
+                <h2 id="nomeUser">Nome para fins de teste</h2>
+                <input type="text" class="edicaoPerfil" id="editarNome">
+                <p id="desc">alguma coisa que está aqui apenas para fins de teste para ter conteudo amostra neste paragrafo por isso esse texto totalmente desnecessario está aqui para servir de conteúdo do paragrafo e esse texto que dá muitas voltas atoa</p>
+                <input type="text" class="edicaoPerfil" id="editarDesc">
+            </div>
+            <div>
+                <button id="editarPerfil" onclick="editar()">Editar perfil</button>
+                <button id="confirmEdicao" onclick="editarPerfil()" style="display: none;">Editar</button>
+            </div>
+        </section>
+
+        <section class="status">
+            <div>
+                <h2 id="pontos">0</h2>
+                <p>Pontos totais</p>
+            </div>
+            <div>
+                <h2 id="posicaoRanking">0</h2>
+                <p>Posição no ranking</p>
+            </div>
+            <div>
+                <h2 id="desafiosCompletos">0</h2>
+                <p>Desafios completos</p>
+            </div>
+            <div>
+                <h2 id="ofensiva">0</h2>
+                <p>Dias seguidos</p>
+            </div>
+            <div>
+                <h2 id="horas">0</h2>
+                <p>Horas de jogo</p>
+            </div>
+            <div>
+                <h2 id="conquistas">0</h2>
+                <p>Conquistas</p>
+            </div>
+        </section>
+
+        <section class="conquistas">
+            <h3>Conquistas</h3>
+            <div class="conquistasContent" id="conquistasContent"></div>
+        </section>
+    </main>
+    
+    <script src="script.js"></script>
+    <script>
+        window.onload = main();
+        function main() {
+            getInfos()
+            atualizarConquistas()
+            conquistasList()
+        }
+
+        function editar() {
+            document.getElementById("editarPerfil").style.display = "none"
+            document.getElementById("confirmEdicao").style.display = "block"
+
+            document.getElementById("nomeUser").style.display = "none"
+            document.getElementById("editarNome").style.display = "block"
+            document.getElementById("editarNome").value = document.getElementById("nomeUser").textContent
+            document.getElementById("desc").style.display = "none"
+            document.getElementById("editarDesc").style.display = "block"
+            document.getElementById("editarDesc").value = document.getElementById("desc").textContent
+        }
+    </script>
+</body>
+</html>

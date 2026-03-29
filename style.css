@@ -1,0 +1,739 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Poppins:wght@600;700&display=swap');
+
+
+/* Geral*/
+
+
+
+* {
+    padding: 0;
+    margin: 0;
+}
+
+body {
+    position: relative;
+    background-color: #07141B;
+    font-family: 'Inter', sans-serif;
+    color: #8FA3AD;
+}
+
+h1, h2, h3, h4 {
+  font-family: 'Poppins', sans-serif;
+  color: #FFFFFF;
+}
+
+
+nav {
+    position: sticky;
+    display: flex;
+    background-color: #0B1F2A;
+    height: 3rem;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 0.12rem solid #35576b;
+    flex-flow: row wrap;
+}
+
+nav a {
+    text-decoration: none;
+    margin: 0.5rem;
+    color: #C7D1D6;
+}
+
+nav a:hover {
+    color: #10CFA6;
+    text-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+.inputBox {
+    margin: 1.5rem 0;
+    height: 1.5rem;
+}
+
+.inputBox input {
+    background-color: #0E2A36;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    outline: none;
+    color: #C7D1D6;
+    height: 100%;
+    padding: 0.2rem 0.5rem;
+}
+
+.inputBox input:hover {
+    border: solid 0.1rem #10CFA6;
+}
+
+.inputBox input::placeholder {
+    color: #C7D1D6;
+}
+
+
+
+/* Index */
+
+
+
+main {
+    display: flex;
+    flex-flow: row wrap;
+    margin-top: 2rem;
+}
+
+
+.mainContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem;
+    margin-left: 8%;
+}
+
+.mainContent h1{
+    text-align: center;
+    font-size: 3.85rem;
+    height: 3.8rem;
+}
+
+.mainContent p {
+    text-align: center;
+    margin-top: 2rem;
+    margin-bottom: 3.5rem;
+    width: 25rem;
+    font-size: 1rem;
+}
+
+.mainContent img {
+    border-radius: 50%;
+    height: 8.7rem;
+    width: 9rem;
+    box-shadow: 0rem 1rem 7rem #18E0B5;
+    margin-bottom: 1rem;
+}
+
+.mainContent button {
+    background-color: #18E0B5;
+    border: none;
+    color: #06211A;
+    border-radius: 0.5rem;
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 1rem;
+    width: 13rem;
+    height: 2rem;
+}
+
+.mainContent button:hover {
+    background-color: #10CFA6;
+    box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+
+.rankingIndex {
+    display: flex;
+    flex-direction: column;
+    padding: 2rem;
+    align-items: center;
+}
+
+.rankingIndexTabel {
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    background-color: #0B1F2A;
+    width: 19rem;
+}
+
+.rankingIndexHeader {
+    border-bottom: solid 0.1rem #35576b;
+    margin: 0.8rem;
+}
+
+.rankingIndexHeader p {
+    font-size: 0.8rem;
+    margin: 0.5rem 0;
+}
+
+.rankingIndexContent {
+    margin: 0.8rem;
+    width: 94%;
+    max-height: 21.4rem;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+.rankingIndexContent::-webkit-scrollbar {
+    width: 0.3rem;
+    padding-left: 0.5rem;
+}
+
+.rankingIndexContent::-webkit-scrollbar-track {
+    background: #0B1F2A;
+}
+
+.rankingIndexContent::-webkit-scrollbar-thumb {
+    background: #18E0B5;
+    border-radius: 0.8rem;
+}
+
+.rankingIndexContent::-webkit-scrollbar-thumb:hover {
+    background: #10CFA6;
+    cursor: pointer;
+}
+
+
+
+
+/* login e signin */
+
+
+
+.loginMain {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4rem;
+}
+
+.loginPanel {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    text-align: center;
+    margin: 0;
+    padding: 1rem;
+}
+
+.loginHeader {
+    margin: 0.8rem;
+    padding-bottom: 1.8rem;
+    border-bottom: solid 0.1rem #35576b;
+}
+
+.loginHeader h2 {
+    height: 2.8rem;
+    font-size: 2.5rem;
+}
+
+.loginPanelContent {
+    margin: 0.5rem 0;
+    justify-items: center;
+}
+
+.loginPanel button {
+    background-color: #18E0B5;
+    font-size: 1rem;
+    border: none;
+    color: #06211A;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem 1rem;
+    margin: 1rem 0 1.5rem 0;
+    width: 9rem;
+    height: 1.8rem;
+}
+
+.loginPanel button:hover {
+    background-color: #10CFA6;
+    box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+.changePath a {
+    font-family: 'Poppins', sans-serif;
+    color: #18E0B5;
+    text-decoration: none;
+    font-size: 2rem;
+}
+
+.changePath a:hover {
+    color: #10CFA6;
+    text-shadow: 0 0 0.2rem #3EF2C9;
+    font-size: 2.5rem;
+}
+
+
+
+/* Perfil */
+
+
+
+.perfilMain {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+
+.status{
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: stretch;
+    padding: 1rem ;
+    margin: 0.8rem;
+    width: 66%;
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+}
+
+.status div {
+    text-align: center;
+    background-color: #0E2A36;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1.5rem 0;
+    width: 15%;
+    height: 4.4rem;
+}
+
+.status div p {
+    font-size: 0.8rem;
+}
+
+
+.info {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1rem;
+    margin: 0.8rem;
+    width: 66%;
+    height: 10rem;
+}
+
+.info button {
+    background-color: #07141B;
+    border: solid 0.1rem #8FA3AD;
+    border-radius: 0.3rem;
+    color: #8FA3AD;
+    width: 5rem;
+    padding: 0.3rem;
+    cursor: pointer;
+}
+
+.info button:hover {
+    box-shadow: 0 0 0.2rem #8FA3AD; 
+}
+
+.profileInfos {
+    width: 75%;
+}
+
+.profileInfos h2 {
+    padding: 1rem 0 0 1rem;
+}
+
+.profileInfos p {
+    word-wrap: break-word;
+    overflow-wrap: break-word;
+    padding: 0.3rem 0 0 1rem;
+}
+
+.conquistas {
+    display: flex;
+    flex-flow: column wrap;
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1rem;
+    margin: 0.8rem;
+    width: 66%;
+}
+
+.conquistasContent {
+    display: flex;
+    flex-flow: row nowrap;
+    justify-content: space-between;
+    gap: 1.7%;
+    margin-top: 1rem;
+    width: 100%;
+    overflow-x: auto;
+    padding-bottom: 0.8rem;
+    scrollbar-gutter: stable;
+}
+
+.conquistaFalse {
+    text-align: center;
+    background-color: #0E2A36;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1.5rem 0;
+    min-width: 15%;
+    height: 4.4rem;
+}
+
+.conquistaTrue {
+    text-align: center;
+    background-color: #12363C;
+    border: solid 0.1rem #10CFA6;
+    color: #C7D1D6;
+    border-radius: 0.8rem;
+    padding: 1.5rem 0;
+    min-width: 15%;
+    height: 4.4rem;
+}
+
+.conquistasContent::-webkit-scrollbar {
+    height: 0.4rem;
+    padding: 0.8rem;
+}
+
+.conquistasContent::-webkit-scrollbar-track {
+    background: #0B1F2A;
+}
+
+.conquistasContent::-webkit-scrollbar-thumb {
+    background: #18E0B5;
+    border-radius: 0.8rem;
+}
+
+.conquistasContent::-webkit-scrollbar-thumb:hover {
+    background: #10CFA6;
+    cursor: pointer;
+}
+
+.edicaoPerfil {
+    display: none;
+    background-color: transparent;
+    border: none;
+    outline: none;
+    width: 100%;
+    color: #FFFFFF;
+}
+
+.edicaoPerfil:hover {
+    border-bottom: solid 0.1rem #10CFA6;
+}
+
+#editarNome {
+    font-size: 1.5rem;
+    font-family: 'Poppins', sans-serif;
+    font-weight: bold;
+    padding: 1rem 0 0 1rem;
+}
+
+#editarDesc {
+    font-size: 1rem;
+    color: #8FA3AD;
+    font-family: 'Inter', sans-serif;
+    padding: 0.35rem 0 0 1rem;
+}
+
+
+
+/* Ranking */
+
+
+
+.rankingMain {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin: 0.5rem;
+}
+
+
+.rankingHeader {
+    text-align: center;
+    width: 66%;
+    padding: 1rem;
+}
+
+.rankingTitle {
+    padding: 0.4rem;
+    margin: 0.4rem;
+}
+
+.rankingInfos {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    padding: 0.4rem;
+    margin: 0.4rem;
+}
+
+.rankingInfo {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1rem 0;
+    min-width: 32.3%;
+    min-height: 3rem;
+}
+
+
+.top3 {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    width: 66%;
+    height: 13rem;
+    padding: 1rem;
+}
+
+.top3 div {
+    display: flex;
+    flex-flow: column wrap;
+    justify-content: flex-end;
+    width: 30%;
+    text-align: center;
+}
+
+.top3 p {
+    color: #18E0B5;
+}
+
+.lugar1 div{
+    background-color: #2A2410;
+    width: 100%;
+    height: 70%;
+    margin-top: 0.5rem;
+    border-radius: 0.8rem 0.8rem 0 0;
+}
+
+.lugar2 div{
+    background-color: #1E2428;
+    width: 100%;
+    height: 55%;
+    margin-top: 0.5rem;
+    border-radius: 0.8rem 0.8rem 0 0;
+}
+
+.lugar3 div{
+    background-color: #2A1F17;
+    width: 100%;
+    height: 40%;
+    margin-top: 0.5rem;
+    border-radius: 0.8rem 0.8rem 0 0;
+}
+
+
+.rankingGeral {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 1rem;
+    width: 63%;
+}
+
+.rankingGeralPos {
+    width: 100%;
+    margin: 1rem 0;
+    max-height: 40.4rem;
+    overflow-y: auto;
+    scrollbar-gutter: stable;
+}
+
+
+.rankingGeralPos::-webkit-scrollbar {
+    width: 0.4rem;
+    padding-left: 0.8rem;
+}
+
+.rankingGeralPos::-webkit-scrollbar-track {
+    background: #0B1F2A;
+}
+
+.rankingGeralPos::-webkit-scrollbar-thumb {
+    background: #18E0B5;
+    border-radius: 0.8rem;
+}
+
+.rankingGeralPos::-webkit-scrollbar-thumb:hover {
+    background: #10CFA6;
+    cursor: pointer;
+}
+
+.rankingGeralContent {
+    display: flex;
+    flex-flow: row wrap;
+    background-color: #0E2A36;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    margin: 0.8rem 0;
+    min-height: 1rem;
+    max-width: 98%;
+}
+
+.rankingGeralContent p {
+    padding: 0.8rem;
+    color: #18E0B5;
+    margin-left: auto;
+}
+
+.rankingGeralContent h4 {
+    padding: 0.8rem;
+}
+
+
+
+/* Configurações */
+
+
+
+.configMain {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+    margin: 0;
+}
+
+.configHeader {
+    width: 66%;
+    padding: 0.8rem;
+}
+
+.configNav {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-around;
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 0.2rem 0.8rem;
+    margin: 0.8rem 0 0.3rem 0;
+    width: 100%;
+}
+
+.configNav div{
+    padding: 0.3rem;
+    width: 15%;
+    border-radius: 0.8rem;
+    text-align: center;
+}
+
+.configNav h4 {
+    cursor: default;
+}
+
+.configNav div:hover {
+    background-color: #07141B;
+}
+
+
+.configContaOn {
+    display: none;
+    flex-flow: column wrap;
+    width: 66%;
+}
+
+.infosPessoais {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    width: 100%;
+}
+
+.infosPessoaisContent div {
+    height: 4rem;
+    margin: 0.5rem 0;
+}
+
+.infosPessoaisContent div input {
+    height: 40%;
+    width: 90%;
+}
+
+.infosPessoaisContent button {
+    background-color: #07141B;
+    border: solid 0.1rem #8FA3AD;
+    border-radius: 0.3rem;
+    color: #8FA3AD;
+    cursor: pointer;
+    padding: 0.3rem;
+    margin-left: 0.5rem;
+}
+
+.infosPessoaisContent button:hover {
+    box-shadow: 0 0 0.2rem #8FA3AD;
+}
+
+
+.seguranca {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    width: 100%;
+}
+
+.segurancaContent div {
+    height: 4rem;
+    margin: 0.5rem 0;
+}
+
+.segurancaContent div input {
+    height: 40%;
+    width: 90%;
+}
+
+.novaSenhaContent {
+    display: flex;
+    flex-flow: row wrap;
+}
+
+.novaSenhaContent div {
+    width: 47.5%;
+    margin: 0;
+}
+
+.seguranca button {
+    background-color: #18E0B5;
+    border: none;
+    color: #06211A;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    width: 17%;
+    height: 2rem;
+}
+
+.seguranca button:hover {
+    background-color: #10CFA6;
+    box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+.zonaPerigo {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #FF4D4D;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    width: 100%;
+}
+
+.zonaPerigoContent {
+    margin: 0.5rem 0;
+}
+
+.zonaPerigoContent button {
+    background-color: #07141B;
+    border: solid 0.1rem #8FA3AD;
+    color: #8FA3AD;
+    border-radius: 0.3rem;
+    cursor: pointer;
+    padding: 0.3rem;
+    margin: 0.5rem 1.5rem 0 0;
+}
+
+.zonaPerigoContent button:hover {
+    box-shadow: 0 0 0.2rem #8FA3AD;
+}
+
+#excluirContaButton {
+    color: #FF4D4D;
+    border-color: #FF4D4D;
+}
+
+#excluirContaButton:hover {
+    box-shadow: 0 0 0.2rem #FF4D4D;
+}

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Signin</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="/login.html" style="display: none;" id="loginLink"></a>
+            <a href="/perfil.html" style="display: none;" id="perfilLink"></a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main class="loginMain" style="margin-top: 0.9rem">
+        <section class="loginPanel">
+            <div class="loginHeader">
+                <h2>SkillUp</h2>
+                <h2 style="color:#18E0B5">Desafie-se</h2>
+            </div>
+            <div class="loginPanelContent">
+                <h1 style="color: #18E0B5; height: 2rem; margin-bottom: 2rem;">Criar conta</h1>
+                <div class="inputBox">
+                    <input placeholder="Nome de usuario" type="text" id="signinNomeInput">
+                </div>
+                <div class="inputBox">
+                    <input placeholder="E-mail" type="email" id="signinEmailInput">
+                </div>
+                <div class="inputBox">
+                    <input placeholder="Senha (8 dígitos)" type="password" id="signinSenhaInput">
+                </div>
+                <div class="inputBox">
+                    <input placeholder="Confimar senha" type="password" id="confirmSigninSenha">
+                </div>
+            </div>
+            <p id="mensagemErro" style="display: none; font-size: 0.8rem; color: red;">mensagem de erro</p>
+            <button onclick="validarInfos()">Criar conta</button>
+        </section>
+
+        <section class="changePath">
+            <a href="login.html">Login</a>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+</body>
+</html>

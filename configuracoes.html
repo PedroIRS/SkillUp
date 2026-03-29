@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Configurações</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main class="configMain">
+        <section class="configHeader">
+            <div class="configTitle">
+                <h1>Configurações</h1>
+                <p>Personalize sua experiência no SkillUp</p>
+            </div>
+            <div class="configNav">
+                <div class="configNavConta">
+                    <h4>Conta</h4>
+                </div>
+                <div class="configNavGeral">
+                    <h4>Geral</h4>
+                </div>
+            </div>
+        </section>
+
+        <section class="configContaOn" id="configContaOn">
+            <section class="infosPessoais">
+                <div class="infosPessoaisHeader">
+                    <h4>Informações pessoais</h4>
+                    <p>Atualize seus dados pessoais</p>
+                </div>
+                <div class="infosPessoaisContent">
+                    <div class="inputBox">
+                        <h4>Nome de Usuário</h4>
+                        <input placeholder="Nome de Usuário" type="text" id="infosNome">
+                        <button onclick="editarNome()">Editar</button>
+                    </div>
+                    <div class="inputBox">
+                        <h4>E-mail</h4>
+                        <input placeholder="E-mail" type="text" id="infosEmail">
+                    </div>
+                </div>
+            </section>
+
+            <section class="seguranca">
+                <div class="segurancaHeader">
+                    <h4>Segurança</h4>
+                    <p>Gerencie sua senha e autenticação</p>
+                </div>
+                <div class="segurancaContent">
+                    <div class="inputBox">
+                        <h4>Senha Atual</h4>
+                        <input type="password" id="senhaAtual">
+                    </div>
+                    <div class="novaSenhaContent" style="margin: 0.5rem 0;">
+                        <div class="inputBox">
+                            <h4>Nova Senha</h4>
+                            <input type="password" id="novaSenha">
+                        </div>
+                        <div class="inputBox">
+                            <h4>Confirmar Nova Senha</h4>
+                            <input type="password" id="confirmNovaSenha">
+                        </div>
+                    </div>
+                </div>
+                <p id="menssagemErro" style="color: red; display: none;">mensagem de erro</p>
+                <button onclick="editarSenha()">Atualizar Segurança</button>
+            </section>
+
+            <section class="zonaPerigo">
+                <div class="zonaPerigoHeader">
+                    <h4 style="color: #FF4D4D;">Zona de Perigo</h4>
+                    <p>Ações irreversíveis para sua conta</p>
+                </div>
+                <div class="zonaPerigoContent">
+                    <button onclick="logout()">Sair da Conta</button>
+                    <button onclick="deletarConta()" id="excluirContaButton">Excluir Conta</button>
+                </div>
+            </section>
+
+            <section class="configContaOff"></section>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = main()
+
+        async function main() {
+            const user = await verificar()
+            if(user) {
+                document.getElementById("configContaOn").style.display = "flex"
+
+                document.getElementById("infosNome").value = user["nome"]
+                document.getElementById("infosEmail").value = user["email"]
+            }
+        }
+    </script>
+</body>
+</html>

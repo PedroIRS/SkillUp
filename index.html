@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main>
+        <section class="rankingIndex">
+            <div class="rankingIndexTabel">
+                <div class="rankingIndexHeader">
+                    <h4>Ranking</h4>
+                    <p>Top 10 jogadores</p>
+                </div>
+                <div class="rankingIndexContent" id="rankingIndexContent"></div>
+            </div>
+        </section>
+
+        <section class="mainContent">
+            <img src="/assets/logo.jpeg" alt="logo">
+            <h1>SkillUp:</h1>
+            <h1 style="color:#18E0B5">Desafie-se!</h1>
+            <p>Transforme seu aprendizado em uma jornada épica. conquiste desafios, suba no ranking e evolua suas habilidades.</p>
+            <button><strong>Começar Agora</strong></button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = main()
+
+        function main() {
+            organizarRanking("rankingIndexContent", 10)
+        }
+    </script>
+</body>
+</html>

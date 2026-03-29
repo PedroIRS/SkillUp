@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="pt-Br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Ranking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+            <button onclick="atualizarRanking()">attran</button>
+        </div>
+    </nav>
+
+    <main class="rankingMain">
+        <section class="rankingHeader">
+            <div class="rankingTitle">
+                <h1 style="display: inline;">Ranking </h1>
+                <h1 style="color: #18E0B5; display: inline;">Global</h1>
+                <p>Veja quem está dominando os desafios</p>
+            </div>
+            <div class="rankingInfos">
+                <div class="rankingInfo">
+                    <h3 id="numParticipantes">0</h3>
+                    <p>Participantes</p>
+                </div>
+                <div class="rankingInfo">
+                    <h3 id="userPosicao">-</h3>
+                    <p>Sua Posição</p>
+                </div>
+                <div class="rankingInfo">
+                    <h3 id="userOfensiva">0</h3>
+                    <p>Sua Sequencia</p>
+                </div>
+            </div>
+        </section>
+        <section class="top3">
+            <div class="lugar2">
+                <h3 id="lugar2Nome">2° lugar</h3>
+                <p id="lugar2Pts">pts</p>
+                <div></div>
+            </div>
+            <div class="lugar1">
+                <h3 id="lugar1Nome">1° lugar</h3>
+                <p id="lugar1Pts">pts</p>
+                <div></div>
+            </div>
+            <div class="lugar3">
+                <h3 id="lugar3Nome">3° lugar</h3>
+                <p id="lugar3Pts">pts</p>
+                <div></div>
+            </div>
+        </section>
+        <section class="rankingGeral" id="rankingGeral">
+            <h4>Classificação Completa</h4>
+            <div class="rankingGeralPos" id="rankingGeralPos"></div>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+    <script>
+        window.onload = main()
+
+        function main() {
+            organizarRanking("rankingGeralPos", "ranking")
+        }
+    </script>
+</body>
+</html>
