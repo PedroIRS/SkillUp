@@ -223,6 +223,7 @@ main {
 .loginPanel button {
     background-color: #18E0B5;
     font-size: 1rem;
+    font-weight: bold;
     border: none;
     color: #06211A;
     border-radius: 0.5rem;
@@ -488,6 +489,10 @@ main {
     color: #18E0B5;
 }
 
+.top3 div p, .top3 div h3{
+    animation: podioAnimacao 2s ease-in-out infinite;
+}
+
 .lugar1 div{
     background-color: #2A2410;
     width: 100%;
@@ -689,6 +694,7 @@ main {
     background-color: #18E0B5;
     border: none;
     color: #06211A;
+    font-weight: bold;
     border-radius: 0.5rem;
     cursor: pointer;
     padding: 0.5rem;
@@ -736,4 +742,53 @@ main {
 
 #excluirContaButton:hover {
     box-shadow: 0 0 0.2rem #FF4D4D;
+}
+
+
+.configContaOff {
+    display: none;
+    flex-flow: column wrap;
+    width: 66%;
+}
+
+.configLogin {
+    background-color: #0B1F2A;
+    text-align: center;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    padding: 0.8rem;
+    margin: 0.8rem 0;
+    width: 100%;
+}
+
+.configLogin button{
+    background-color: #18E0B5;
+    border: none;
+    color: #06211A;
+    font-weight: bold;
+    font-size: 1rem;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.7rem 0;
+    width: 17%;
+    height: 2rem;
+}
+
+.configLogin button:hover {
+    background-color: #10CFA6;
+    box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+
+@keyframes podioAnimacao {
+  0% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(0.4rem);
+  }
+  100% {
+    transform: translateY(0);
+  }
 }

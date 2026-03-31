@@ -87,8 +87,13 @@
                     <button onclick="deletarConta()" id="excluirContaButton">Excluir Conta</button>
                 </div>
             </section>
+        </section>
 
-            <section class="configContaOff"></section>
+        <section class="configContaOff" id="configContaOff">
+            <div class="configLogin">
+                <h4>Faça login para acessar as configurações da sua conta</h4>
+                <button onclick="window.location.href='login.html'">Login</button>
+            </div>
         </section>
     </main>
 
@@ -100,9 +105,13 @@
             const user = await verificar()
             if(user) {
                 document.getElementById("configContaOn").style.display = "flex"
+                document.getElementById("configContaOff").style.display = "none"
 
                 document.getElementById("infosNome").value = user["nome"]
                 document.getElementById("infosEmail").value = user["email"]
+            } else {
+                document.getElementById("configContaOff").style.display = "flex"
+                document.getElementById("configContaOn").style.display = "none"
             }
         }
     </script>
