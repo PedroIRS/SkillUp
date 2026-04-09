@@ -33,7 +33,52 @@
             <h1>SkillUp:</h1>
             <h1 style="color:#18E0B5">Desafie-se!</h1>
             <p>Transforme seu aprendizado em uma jornada épica. conquiste desafios, suba no ranking e evolua suas habilidades.</p>
-            <button><strong>Começar Agora</strong></button>
+            <button onclick="selectTurma()"><strong>Começar Agora</strong></button>
+        </section>
+
+        <section class="userTurmas">
+            <div class="userTurmasHeader">
+                <div>
+                    <h4>Minhas turmas</h4>
+                    <p>Participe de turmas e complete desafios exclusivos</p>
+                </div>
+                <button onclick="selectTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</button>
+            </div>
+            <div class="userTurmasContent">
+                <div class="userTurmaContentItem">
+                    <div>
+                        <h4>Nome da turma</h4>
+                        <p>professor da turma</p>
+                    </div>
+                    <button>sair</button>
+                </div>
+            </div>
+            <button class="entrarTurmaButton" onclick="entrarTurma()">Entrar em uma nova turma</button>
+        </section>
+
+        <section class="entrarTurma">
+            <div class="entrarTurmaHeader">
+                <div>
+                    <h4>Entrar em uma turma</h4>
+                    <p>Entre em novas turmas para participar de desafios exclusivos</p>
+                </div>
+                <button onclick="entrarTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</button>
+            </div>
+            <div class="inputBox">
+                <input placeholder="Pesquisar nome da turma" type="text">
+            </div>
+            <div class="entrarTurmaContent">
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+                <div>lsjdnl</div>
+            </div>
         </section>
     </main>
 
@@ -43,6 +88,28 @@
 
         function main() {
             organizarRanking("rankingIndexContent", 10)
+        }
+
+        function selectTurma() {
+            const userTurmas = document.querySelector(".userTurmas")
+            if (userTurmas.style.display === "none") {
+                userTurmas.style.display = "flex"
+            } else {
+                userTurmas.style.display = "none"
+            }
+        }
+
+        function entrarTurma() {
+            const entrarTurma = document.querySelector(".entrarTurma")
+            const userTurmas = document.querySelector(".userTurmas")
+            if (entrarTurma.style.display === "none") {
+                entrarTurma.style.display = "flex"
+                userTurmas.style.display = "none"
+
+            } else {
+                entrarTurma.style.display = "none"
+                userTurmas.style.display = "flex"
+            }
         }
     </script>
 </body>

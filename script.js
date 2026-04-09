@@ -16,7 +16,11 @@ async function verificar() {
     
     if (response.status == 200) {
         document.getElementById("loginLink").style.display = "none"
-        document.getElementById("perfilLink").style.display = "inline"
+        if(data["isProfessor"]) {
+            document.getElementById("perfilLink").style.display = "inline"
+        } else {
+            document.getElementById("perfilLink").style.display = "inline"
+        }
         return data
     } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken();
@@ -72,12 +76,13 @@ function validarInfos() {
     const nome = document.getElementById("signinNomeInput").value;
     const email = document.getElementById("signinEmailInput").value;
     const senha = document.getElementById("signinSenhaInput").value;
+    const isProfessor = document.getElementById("isProfessor").checked;
     const confirmSenha = document.getElementById("confirmSigninSenha").value;
 
     if(senha.length >= 8) {
         if(!senha.includes(" ")) {
             if(senha == confirmSenha) {
-                signin(nome, email, senha)
+                signin(nome, email, senha, isProfessor)
             } else {
                 document.getElementById("mensagemErro").style.display = "block";
                 document.getElementById("mensagemErro").textContent = "As senhas não coincidem";
@@ -95,7 +100,7 @@ function validarInfos() {
 }
 
 
-async function signin(nome, email, senha) {
+async function signin(nome, email, senha, isProfessor) {
     const response = await fetch("http://127.0.0.1:8000/auth/signin", {
         method: "POST",
         headers: {
@@ -104,7 +109,8 @@ async function signin(nome, email, senha) {
         body: JSON.stringify({
         "nome": nome,
         "email": email,
-        "senha": senha
+        "senha": senha,
+        "isProfessor": isProfessor
         })
     });
 
