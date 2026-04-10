@@ -40,11 +40,10 @@
                     <p>Atualize seus dados pessoais</p>
                 </div>
                 <div class="infosPessoaisContent">
-                    <div class="inputBox">
+                    <form class="inputBox" onsubmit="editarNome()">
                         <h4>Nome de Usuário</h4>
                         <input placeholder="Nome de Usuário" type="text" id="infosNome">
-                        <button onclick="editarNome()">Editar</button>
-                    </div>
+                    </form>
                     <div class="inputBox">
                         <h4>E-mail</h4>
                         <input placeholder="E-mail" type="text" id="infosEmail">
@@ -62,12 +61,12 @@
                         <h4>Senha Atual</h4>
                         <input type="password" id="senhaAtual">
                     </div>
-                    <div class="novaSenhaContent" style="margin: 0.5rem 0;">
-                        <div class="inputBox">
+                    <div class="novaSenhaContent">
+                        <div class="inputBox" style="margin: 0 auto 0 0;">
                             <h4>Nova Senha</h4>
                             <input type="password" id="novaSenha">
                         </div>
-                        <div class="inputBox">
+                        <div class="inputBox" style="margin: 0 0 0 auto;">
                             <h4>Confirmar Nova Senha</h4>
                             <input type="password" id="confirmNovaSenha">
                         </div>
@@ -83,8 +82,8 @@
                     <p>Ações irreversíveis para sua conta</p>
                 </div>
                 <div class="zonaPerigoContent">
-                    <button onclick="logout()">Sair da Conta</button>
-                    <button onclick="deletarConta()" id="excluirContaButton">Excluir Conta</button>
+                    <button onclick="alertaSairConta()">Sair da Conta</button>
+                    <button onclick="alertaExcluirConta()" id="excluirContaButton">Excluir Conta</button>
                 </div>
             </section>
         </section>
@@ -95,6 +94,27 @@
                 <button onclick="window.location.href='login.html'">Login</button>
             </div>
         </section>
+
+        <section class="grayFog"></section>
+
+        <section class="confirmarSairConta">
+            <h3>Tem certeza que deseja sair da conta?</h3>
+            <button onclick="logout()">Sair da conta</button>
+            <button onclick="alertaSairConta()">Cancelar</button>
+        </section>
+
+        <section class="confirmarExcluirConta">
+            <h3>Tem certeza que deseja excluir sua conta?</h3>
+            <div>
+                <h4>Digite DELETAR para confirmar</h4>
+                <div class="inputBox">
+                    <input type="text" id="confirmarExclusao">
+                </div>
+                <button onclick="confirmDeletar()">Excluir Conta</button>
+            </div>
+            <button onclick="alertaExcluirConta()">Cancelar</button>
+        </section>
+
     </main>
 
     <script src="script.js"></script>
@@ -102,6 +122,9 @@
         window.onload = main()
 
         async function main() {
+            document.getElementById("configContaOff").style.display = "flex"
+            document.getElementById("configContaOn").style.display = "none"
+
             const user = await verificar()
             if(user) {
                 document.getElementById("configContaOn").style.display = "flex"
@@ -109,15 +132,48 @@
 
                 document.getElementById("infosNome").value = user["nome"]
                 document.getElementById("infosEmail").value = user["email"]
-            } else {
-                document.getElementById("configContaOff").style.display = "flex"
-                document.getElementById("configContaOn").style.display = "none"
             }
         }
 
-        function alertaSairConta() {}
+        function alertaSairConta() {
+            const grayFog = document.querySelector(".grayFog")
+            const confirm = document.querySelector(".confirmarSairConta")
+            const body = document.querySelector("body")
 
-        function alertaExcluirConta() {}
+            if(confirm.style.display == "none") {
+                grayFog.style.display = "block"
+                confirm.style.display = "flex"
+                body.style.overflow = "hidden"
+            } else {
+                grayFog.style.display = "none"
+                confirm.style.display = "none"
+                body.style.overflow = "auto"
+            }
+        }
+
+        function alertaExcluirConta() {
+            const grayFog = document.querySelector(".grayFog")
+            const confirm = document.querySelector(".confirmarExcluirConta")
+            const body = document.querySelector("body")
+
+            if(confirm.style.display == "none") {
+                grayFog.style.display = "block"
+                confirm.style.display = "flex"
+                body.style.overflow = "hidden"
+                document.getElementById("confirmarExclusao").value = ""
+            } else {
+                grayFog.style.display = "none"
+                confirm.style.display = "none"
+                body.style.overflow = "auto"
+            }
+        }
+
+        function confirmDeletar() {
+            const confirmarExclusao = document.getElementById("confirmarExclusao")
+            if(confirmarExclusao.value === "DELETAR") {
+                deletarConta()
+            }
+        }
     </script>
 </body>
 </html>

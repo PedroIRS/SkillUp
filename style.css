@@ -17,7 +17,7 @@ body {
     color: #8FA3AD;
 }
 
-h1, h2, h3, h4 {
+h1, h2, h3, h4, h5, h6 {
   font-family: 'Poppins', sans-serif;
   color: #FFFFFF;
 }
@@ -68,6 +68,16 @@ nav a:hover {
     color: #C7D1D6;
 }
 
+
+.grayFog {
+    background-color: #35576b;
+    opacity: 0.5;
+    display: none;
+    width: 100%;
+    height: 100%;
+    position: fixed;
+    top: 0;
+}
 
 
 /* Index */
@@ -195,6 +205,7 @@ main {
     width: 40%;
     height: 30rem;
     box-shadow: 0 0 0.2rem #35576b;
+    z-index: 20;
 }
 
 .userTurmasHeader {
@@ -311,6 +322,7 @@ main {
     width: 40%;
     height: 30rem;
     box-shadow: 0 0 0.2rem #35576b;
+    z-index: 20;
 }
 
 .entrarTurmaHeader {
@@ -820,29 +832,16 @@ main {
     width: 100%;
 }
 
-.infosPessoaisContent div {
+.infosPessoaisContent div, .infosPessoaisContent form {
     height: 4rem;
     margin: 0.5rem 0;
 }
 
-.infosPessoaisContent div input {
+.infosPessoaisContent div input, .infosPessoaisContent form input {
     height: 40%;
-    width: 90%;
+    width: 98%;
 }
 
-.infosPessoaisContent button {
-    background-color: #07141B;
-    border: solid 0.1rem #8FA3AD;
-    border-radius: 0.3rem;
-    color: #8FA3AD;
-    cursor: pointer;
-    padding: 0.3rem;
-    margin-left: 0.5rem;
-}
-
-.infosPessoaisContent button:hover {
-    box-shadow: 0 0 0.2rem #8FA3AD;
-}
 
 
 .seguranca {
@@ -861,16 +860,18 @@ main {
 
 .segurancaContent div input {
     height: 40%;
-    width: 90%;
+    width: 98%;
 }
 
 .novaSenhaContent {
     display: flex;
     flex-flow: row wrap;
+    margin: 0.5rem 0;
+    width: 99%;
 }
 
 .novaSenhaContent div {
-    width: 47.5%;
+    width: 48.5%;
     margin: 0;
 }
 
@@ -962,6 +963,120 @@ main {
 .configLogin button:hover {
     background-color: #10CFA6;
     box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+
+.confirmarSairConta {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 30%;
+    flex-flow: column wrap;
+    padding: 1rem;
+    width: 40%;
+    height: auto;
+    box-shadow: 0 0 0.2rem #35576b;
+}
+
+.confirmarSairConta h3 {
+    margin: 0 0 0.8rem 0;
+}
+
+.confirmarSairConta button {
+    background-color: #07141B;
+    align-self: center;
+    border: solid 0.1rem #8FA3AD;
+    color: #8FA3AD;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 50%;
+    height: 2rem;
+    margin: 0.5rem 0;
+}
+
+.confirmarSairConta button:hover {
+    box-shadow: 0 0 0.2rem #8FA3AD;
+}
+
+
+.confirmarExcluirConta {
+    background-color: #0B1F2A;
+    border: solid 0.1rem #35576b;
+    border-radius: 0.8rem;
+    position: absolute;
+    display: none;
+    top: 50%;
+    left: 30%;
+    flex-flow: column wrap;
+    padding: 1rem;
+    width: 40%;
+    height: auto;
+    box-shadow: 0 0 0.2rem #35576b;
+}
+
+.confirmarExcluirConta div {
+    align-self: center;
+    text-align: center;
+    margin: 0.8rem 0;
+}
+
+.confirmarExcluirConta div h4 {
+    color: #FF4D4D;
+}
+
+.confirmarExcluirConta div input {
+    text-align: center;
+    color: #FF4D4D;
+    font-size: 1rem;
+    font-weight: bold;
+    border: solid 0.1rem #FF4D4D;
+    padding: 0.3rem;
+    width: 100%;
+}
+
+.confirmarExcluirConta div input:hover {
+    border-color: #FF4D4D;
+    box-shadow: 0 0 0.2rem #FF4D4D;
+}
+
+.confirmarExcluirConta div button {
+    background-color: #FF4D4D;
+    border: none;
+    color: #06211A;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    margin: 0.8rem 0 0.5rem 0;
+    width: 50%;
+    height: 2rem;
+}
+
+.confirmarExcluirConta div button:hover {
+    background-color: #FF1A1A;
+    box-shadow: 0 0 0.2rem #FF4D4D;
+}
+
+.confirmarExcluirConta button {
+    background-color: #07141B;
+    align-self: center;
+    border: solid 0.1rem #8FA3AD;
+    color: #8FA3AD;
+    font-weight: bold;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    padding: 0.5rem;
+    width: 25%;
+    height: 2rem;
+}
+
+.confirmarExcluirConta button:hover {
+    box-shadow: 0 0 0.2rem #8FA3AD;
 }
 
 
