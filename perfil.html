@@ -10,24 +10,37 @@
     <nav>
         <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
         <div>
-            <a href="perfil.html" id="perfilLink" style="display: none;">Perfil</a>
-            <a href="login.html" id="loginLink">Login</a>
+            <a href="/perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="/login.html" id="loginLink">Login</a>
             <a href="/ranking.html">Ranking</a>
             <a href="/configuracoes.html">Configurações</a>
         </div>
     </nav>
 
     <main class="perfilMain">
-        <section class="info">
+        <section class="infos">
             <div class="profileInfos">
-                <h2 id="nomeUser">Nome para fins de teste</h2>
-                <input type="text" class="edicaoPerfil" id="editarNome">
-                <p id="desc">alguma coisa que está aqui apenas para fins de teste para ter conteudo amostra neste paragrafo por isso esse texto totalmente desnecessario está aqui para servir de conteúdo do paragrafo e esse texto que dá muitas voltas atoa</p>
-                <input type="text" class="edicaoPerfil" id="editarDesc">
+                <div class="info">
+                    <h2 id="nomeUser" style="display: inline-block;">-</h2>
+                    <h6 id="nivel">Nivel X</h6>
+                    <input type="text" class="edicaoPerfil" id="editarNome">
+                    <p id="desc">-</p>
+                    <textarea class="edicaoPerfil" id="editarDesc">Fale um pouco sobre você</textarea>
+                </div>
+                <div class="infosButton">
+                    <button id="editarPerfil" onclick="editar()" style="display: none;">Editar perfil</button>
+                    <button id="confirmEdicao" onclick="editarPerfil()" style="display: none;">Editar</button>
+                </div>
             </div>
-            <div>
-                <button id="editarPerfil" onclick="editar()">Editar perfil</button>
-                <button id="confirmEdicao" onclick="editarPerfil()" style="display: none;">Editar</button>
+
+            <div class="xp">
+                <div class="xpHeader">
+                    <p id="progressNivel">Progresso para o nivel X</p>
+                    <h6 id="progressoXp" style="color: #10CFA6;">X / Y xp</h6>
+                </div>
+                <div class="barraXp">
+                    <div class="xpAtual" id="xpAtual"></div>
+                </div>
             </div>
         </section>
 
@@ -67,10 +80,28 @@
     <script src="script.js"></script>
     <script>
         window.onload = main();
-        function main() {
-            getInfos()
-            atualizarConquistas()
-            conquistasList()
+        async function main() {
+            const parameters = new URLSearchParams(window.location.search);
+            const idUser = parameters.get("id")
+
+            if(!idUser) {
+                const verify = await verificar()
+                if(verify) {
+                    window.location.href = `/perfil.html?id=${verify["id"]}`
+                } else {
+                    window.location.href = "/"
+                    alert("Faça login para acessar este conteúdo")
+                }
+            }
+
+            await getInfos(idUser);
+            await atualizarConquistas();
+            await conquistasList(idUser);
+            
+            const verify = await verificar()
+            if(verify && verify["id"] == idUser) {
+                document.getElementById("editarPerfil").style.display = "block"
+            }
         }
 
         function editar() {
@@ -80,6 +111,7 @@
             document.getElementById("nomeUser").style.display = "none"
             document.getElementById("editarNome").style.display = "block"
             document.getElementById("editarNome").value = document.getElementById("nomeUser").textContent
+            
             document.getElementById("desc").style.display = "none"
             document.getElementById("editarDesc").style.display = "block"
             document.getElementById("editarDesc").value = document.getElementById("desc").textContent

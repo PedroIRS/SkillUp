@@ -32,6 +32,7 @@ nav {
     align-items: center;
     border-bottom: 0.12rem solid #35576b;
     flex-flow: row wrap;
+    cursor: default;
 }
 
 nav a {
@@ -490,20 +491,30 @@ main {
 }
 
 
-.info {
+.infos {
     display: flex;
-    flex-flow: row nowrap;
-    justify-content: space-between;
+    flex-flow: column nowrap;
     background-color: #0B1F2A;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
     padding: 1rem;
     margin: 0.8rem;
     width: 66%;
-    height: 10rem;
+    height: auto;
 }
 
-.info button {
+.profileInfos {
+    display: flex;
+    flex-flow: row wrap;
+    width: 100%;
+}
+
+.infosButton {
+    margin-left: auto;
+    margin-top: 1rem;
+}
+
+.infosButton button {
     background-color: #07141B;
     border: solid 0.1rem #8FA3AD;
     border-radius: 0.3rem;
@@ -513,23 +524,75 @@ main {
     cursor: pointer;
 }
 
-.info button:hover {
+.infosButton button:hover {
     box-shadow: 0 0 0.2rem #8FA3AD; 
 }
 
-.profileInfos {
+.info {
     width: 75%;
 }
 
-.profileInfos h2 {
+.info h2 {
     padding: 1rem 0 0 1rem;
 }
 
-.profileInfos p {
+.info p {
+    height: 3.5rem;
     word-wrap: break-word;
     overflow-wrap: break-word;
-    padding: 0.3rem 0 0 1rem;
+    padding: 0.3rem 0 0.3rem 1rem;
 }
+
+.xp {
+    display: flex;
+    flex-flow: column wrap;
+    background-color: #0E2A36;
+    border: none;
+    border-radius: 0.8rem;
+    align-self: center;
+    padding: 1rem;
+    margin: 0.5rem 0 0 0;
+    width: 95%;
+    height: auto;
+}
+
+.xpHeader {
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.xpHeader p {
+    font-size: 0.8rem;
+}
+
+.barraXp {
+    background-color: #12363C;
+    height: 0.7rem;
+    width: 100%;
+    margin-top: 0.8rem;
+    border-radius: 1rem;
+}
+
+.xpAtual {
+    background-color: #18E0B5;
+    width: 0%;
+    height: 0.7rem;
+    border-radius: 1rem;
+}
+
+#nivel {
+    display: inline-block;
+    background-color: #12363C;
+    color: #18E0B5;
+    border-radius: 0.9rem;
+    padding: 0.3rem 0.7rem;
+    margin-left: 0.5rem;
+    vertical-align: 60%;
+    font-size: 0.5rem;
+}
+
 
 .conquistas {
     display: flex;
@@ -616,9 +679,10 @@ main {
 
 #editarDesc {
     font-size: 1rem;
+    height: 3.5rem;
     color: #8FA3AD;
     font-family: 'Inter', sans-serif;
-    padding: 0.35rem 0 0 1rem;
+    padding: 0.3rem 0 0.3rem 1rem;
 }
 
 

@@ -1,7 +1,19 @@
 window.onload = main();
 
 function main() {
-    verificar();
+    upNav();
+}
+
+async function upNav() {
+    const verify = await verificar()
+    if(verify) {
+        document.getElementById("loginLink").style.display = "none"
+        if(verify["isProfessor"]) {
+            document.getElementById("perfilLink").style.display = "inline"
+        } else {
+            document.getElementById("perfilLink").style.display = "inline"
+        }
+    }
 }
 
 async function verificar() {
@@ -15,12 +27,6 @@ async function verificar() {
     const data = await response.json();
     
     if (response.status == 200) {
-        document.getElementById("loginLink").style.display = "none"
-        if(data["isProfessor"]) {
-            document.getElementById("perfilLink").style.display = "inline"
-        } else {
-            document.getElementById("perfilLink").style.display = "inline"
-        }
         return data
     } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken();
@@ -42,8 +48,9 @@ async function refreshToken() {
     const data = await response.json();
     if(response.status == 401) {
         return false;
+    } else {
+        return true;
     }
-    return true;
 }
 
 async function login() {
@@ -123,8 +130,8 @@ async function signin(nome, email, senha, isProfessor) {
 }
 
 
-async function getInfos() {
-    const response = await fetch('http://127.0.0.1:8000/profile/getinfo', {
+async function getInfos(idUser) {
+    const response = await fetch(`http://127.0.0.1:8000/profile/getinfo/${idUser}`, {
         method: 'GET',
         credentials: "include",
         headers: {
@@ -133,7 +140,7 @@ async function getInfos() {
     })
     
     const data = await response.json()
-    if(response.status == 200){
+    if(response.status == 200) {
         document.getElementById("nomeUser").textContent = data["nome"];
         document.getElementById("desc").textContent = data["desc"];
         document.getElementById("pontos").textContent = data["pontos"];
@@ -142,14 +149,13 @@ async function getInfos() {
         document.getElementById("ofensiva").textContent = data["ofensiva"];
         document.getElementById("horas").textContent = data["horasJogadas"];
         document.getElementById("conquistas").textContent = data["numConquistas"];
-    } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
-        const refresh = await refreshToken();
-        if(refresh) {
-            return getInfos()
-        } else if (!refresh) {
-            window.location.href = "/"
-            alert("Faça login para acessar este conteudo")
-        }
+        document.getElementById("nivel").textContent = `Nivel ${data["nivel"]}`
+        document.getElementById("progressNivel").textContent = `Progresso para o nivel ${data["nivel"] + 1}`
+        document.getElementById("progressoXp").textContent = `${data["xp"]} / ${Math.floor(100 * (1.5 ** data["nivel"]))} xp`
+        document.getElementById("xpAtual").style.width = `${(data["xp"] * 100) / (100 * (1.5 ** data["nivel"]))}%`
+    } else {
+        alert("Usuário não encontrado")
+        window.location.href = "/"
     }
 }
 
@@ -183,9 +189,6 @@ async function editarPerfil() {
             const refresh = await refreshToken()
             if(refresh) {
                 editarPerfil()
-            } else if (!refresh) {
-                window.location.href = "/"
-                alert("Faça login para acessar este conteudo")
             }
         }
     } else {
@@ -205,8 +208,8 @@ async function atualizarRanking() {
     console.log(data)
 }
 
-async function getUserConquistas() {
-    const response = await fetch("http://127.0.0.1:8000/profile/getUserConquistas", {
+async function getUserConquistas(idUser) {
+    const response = await fetch(`http://127.0.0.1:8000/profile/getUserConquistas/${idUser}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -240,9 +243,9 @@ async function conquistas() {
     return data
 }
 
-async function conquistasList() {
+async function conquistasList(idUser) {
     const conquistasContent = document.getElementById("conquistasContent")
-    const userConquistas = await getUserConquistas()
+    const userConquistas = await getUserConquistas(idUser)
     const conquistaList = await conquistas()
     
     for (let i = 0; i < conquistaList.length; i++) {
@@ -290,7 +293,7 @@ async function organizarRanking(espaco, num) {
         document.getElementById("numParticipantes").textContent = Object.keys(rank).length
         const verify = await verificar()
         if (verify) {
-            const response = await fetch('http://127.0.0.1:8000/profile/getinfo', {
+            const response = await fetch(`http://127.0.0.1:8000/profile/getinfo/${verify["id"]}`, {
             method: 'GET',
             credentials: "include",
             headers: {
@@ -306,11 +309,16 @@ async function organizarRanking(espaco, num) {
         for (let i in rank) {
             const div = document.createElement("div")
             div.classList.add("rankingGeralContent")
+
             const pos = document.createElement("h4")
             pos.textContent = i
             pos.style.color = "#8FA3AD"
+
             const h4 = document.createElement("h4")
             h4.textContent = rank[i]["nome"]
+            h4.style.cursor = "pointer"
+            h4.onclick = function() {window.location.href = `./perfil.html?id=${rank[i]["idUser"]}`}
+            
             const p = document.createElement("p")
             p.textContent = `${rank[i]["pontos"]} pts`
 
@@ -349,11 +357,16 @@ async function organizarRanking(espaco, num) {
 
             const div = document.createElement("div")
             div.classList.add("rankingGeralContent")
+
             const pos = document.createElement("h4")
             pos.textContent = i
             pos.style.color = "#8FA3AD"
+
             const h4 = document.createElement("h4")
             h4.textContent = rank[i]["nome"]
+            h4.style.cursor = "pointer"
+            h4.onclick = function() {window.location.href = `./perfil.html?id=${rank[i]["idUser"]}`}
+
             const p = document.createElement("p")
             p.textContent = `${rank[i]["pontos"]} pts`
 
@@ -406,9 +419,6 @@ async function editarSenha() {
             const refresh = await refreshToken()
             if(refresh) {
                 editarSenha()
-            } else if (!refresh) {
-                window.location.href = "/"
-                alert("Faça login para acessar este conteudo")
             }
         } else if(response.status == 401 && data["detail"] == "Senha incorreta") {
             document.getElementById("menssagemErro").style.display = "block"
@@ -445,9 +455,6 @@ async function editarNome() {
         const refresh = await refreshToken()
         if(refresh) {
             editarNome()
-        } else if (!refresh) {
-            window.location.href = "/"
-            alert("Faça login para acessar este conteudo")
         }
     }
 }
@@ -463,8 +470,16 @@ async function logout() {
         },
     })
     const data = await response.json()
-    window.location.reload()
-    console.log(data, response.status)
+
+    if(response.status == 200) {
+        window.location.href = "/"
+        console.log(data, response.status)
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            logout()
+        }
+    }
 }
 
 
@@ -485,9 +500,6 @@ async function deletarConta() {
         const refresh = await refreshToken()
         if(refresh) {
             deletarConta()
-        } else if (!refresh) {
-            window.location.href = "/"
-            alert("Faça login para acessar este conteudo")
         }
     }
 }
