@@ -43,5 +43,23 @@
     
     <script src="script.js"></script>
 
+    <script>
+        window.onload = main()
+
+        function main() {
+            const loginEmailInput = document.getElementById("loginEmailInput")
+            const loginSenhaInput = document.getElementById("loginSenhaInput")
+            loginEmailInput.addEventListener("keydown", (e) => {
+                if(e.key == "Enter" && loginEmailInput.value && loginSenhaInput.value) {
+                    login()
+                }
+            })
+            loginSenhaInput.addEventListener("keydown", (e) => {
+                if(e.key == "Enter" && loginEmailInput.value && loginSenhaInput.value) {
+                    login()
+                }
+            })
+        }
+    </script>
 </body>
 </html>

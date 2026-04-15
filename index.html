@@ -47,12 +47,7 @@
                 </div>
                 <h6 onclick="selectTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
             </div>
-            <div class="userTurmasContent" id="userTurmasContent">
-                <div class="userTurmaContentItem">
-                    <h4>Nome da turma</h4>
-                    <p>professor da turma</p>
-                </div>
-            </div>
+            <div class="userTurmasContent" id="userTurmasContent"></div>
             <button class="entrarTurmaButton" onclick="entrarTurmaInterface()">Entrar em uma nova turma</button>
         </section>
 
@@ -67,12 +62,7 @@
             <div class="inputBox">
                 <input placeholder="Pesquisar nome da turma" type="text" id="pesquisaTurmaInput">
             </div>
-            <div class="entrarTurmaInterfaceContent" id="entrarTurmaInterfaceContent">
-                <div class="entrarTurmaInterfaceContentItem">
-                    <h4>Nome</h4>
-                    <p>Prof</p>
-                </div>
-            </div>
+            <div class="entrarTurmaInterfaceContent" id="entrarTurmaInterfaceContent"></div>
         </section>
 
         <section class="professorTurmas">
@@ -84,11 +74,7 @@
                 <h6 onclick="gerenciarTurmas()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
             </section>
 
-            <section class="professorTurmasContent" id="professorTurmasContent">
-                <div class="professorTurmasContentItem">
-                    <h4>Nome</h4>
-                </div>
-            </section>
+            <section class="professorTurmasContent" id="professorTurmasContent"></section>
 
             <button onclick="criarTurmaInterface()">Criar nova turma</button>
         </section>
@@ -125,6 +111,7 @@
         window.onload = main()
 
         async function main() {
+            atualizarRanking()
             organizarRanking("rankingIndexContent", "top10")
             listarTurmas("userTurmasContent", "minhasTurmas")
             listarTurmas("entrarTurmaInterfaceContent", "entrarTurma")

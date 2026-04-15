@@ -595,6 +595,16 @@ async function criarTurma(nome, senha, desc) {
 
     if(response.status == 200) {
         console.log(data)
+        const criarTurma = document.querySelector(".criarTurmaInterface")
+        const professorTurmas = document.querySelector(".professorTurmas")
+
+        if (criarTurma.style.display === "none") {
+            criarTurma.style.display = "flex"
+            professorTurmas.style.display = "none"
+        } else {
+            criarTurma.style.display = "none"
+            professorTurmas.style.display = "flex"
+        }
     }
 }
 
@@ -812,6 +822,23 @@ async function criarDesafio(idTurma) {
     const data = await response.json()
     if(response.status == 200) {
         return true
+    } else if(response.status == 401 && data["detail"] == "Não autorizado") {
+        const refresh = await refreshToken()
+        if(refresh) {
+            criarDesafio(idTurma)
+        } else {
+            const men = document.getElementById("menssagemErroDesafio")
+            men.textContent = "Você não tem permissão para realizar esta ação"
+            men.style.display = "block"
+        }
+    } else if(response.status == 401 && data["detail"] == "Data invalida") {
+        const men = document.getElementById("menssagemErroDesafio")
+            men.textContent = "Data inválida"
+            men.style.display = "block"
+    } else if(response.status == 404) {
+        const men = document.getElementById("menssagemErroDesafio")
+            men.textContent = "Turma não encontrada"
+            men.style.display = "block"
     }
 }
 
@@ -828,6 +855,11 @@ async function listarUserDesafios() {
     if(response.status == 200) {
         console.log(data)
         return data
+    } else if(response.status == 401 && data["detail"] == "Não autorizado") {
+        const refresh = await refreshToken()
+        if(refresh) {
+            listarUserDesafios()
+        }
     }
 }
 
@@ -846,7 +878,6 @@ async function getDesafiosDiarios (idTurma) {
 
         const numeroDesafios = data.length
         let results = {}
-        const userDesafios = await listarUserDesafios()
 
         const pergunta = document.querySelector(".pergunta")
         const item1Content = document.querySelector(".item1Content")
@@ -975,6 +1006,17 @@ async function getDesafiosDiarios (idTurma) {
                 completarDesafio(i, results[i])
             }
         }
+    } else if(response.status == 401) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            getDesafiosDiarios
+        } else {
+            window.location.href = "/"
+            alert("Você não tem acesso este conteudo")
+        }
+    } else if(response.status == 404) {
+        window.location.href = `/turma.html?id=${idTurma}`
+        alert("Não há desafios nesta turma")
     }
 }
 
@@ -994,5 +1036,10 @@ async function completarDesafio(idDesafio, condition) {
     const data = await response.json()
     if(response.status == 200) {
         console.log(data)
+    } else if(response.status == 401) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            completarDesafio(idDesafio, condition)
+        }
     }
 }

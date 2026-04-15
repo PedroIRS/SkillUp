@@ -62,12 +62,7 @@
                     <h2 style="color: #18E0B5;">Turma</h2>
                 </div>
 
-                <div class="turmaAlunosContent" id="turmaAlunosContent">
-                    <div class="turmaAlunosContentItem" id="turmaAlunosContentItem">
-                        <h3>Nominho</h3>
-                        <p>pontinhos</p>
-                    </div>
-                </div>
+                <div class="turmaAlunosContent" id="turmaAlunosContent"></div>
             </div>
         </section>
 
@@ -101,6 +96,7 @@
             <div class="inputBox">
                 <input type="text" placeholder="data" id="dataInput">
             </div>
+            <p id="menssagemErroDesafio" style="color: red; display: none;">mensagem de erro</p>
             <button id="criarDesafioBtt">Criar</button>
         </section>
 
@@ -135,9 +131,16 @@
 
             const criarDesafioBtt = document.getElementById("criarDesafioBtt")
             criarDesafioBtt.addEventListener("click", async () => {
-                const resp = await criarDesafio(idTurma)
-                if(resp) {
-                    criarTurmaInterface()
+                const respostaItem = document.getElementById("itemCorretoInput")
+                if(!["1", "2", "3", "4"].includes(respostaItem)) {
+                    const resp = await criarDesafio(idTurma)
+                    if(resp) {
+                        criarTurmaInterface()
+                    }
+                } else {
+                    const men = document.getElementById("menssagemErroDesafio")
+                    men.textContent = "Resposta inválida"
+                    men.style.display = "block"
                 }
             })
 

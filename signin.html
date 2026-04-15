@@ -50,5 +50,24 @@
 
     <script src="script.js"></script>
 
+    <script>
+        window.onload = main()
+
+        function main() {
+            const signinNomeInput = document.getElementById("signinNomeInput")
+            const signinEmailInput = document.getElementById("signinEmailInput")
+            const signinSenhaInput = document.getElementById("signinSenhaInput")
+            const confirmSigninSenha = document.getElementById("confirmSigninSenha")
+            const elements = [signinEmailInput, signinNomeInput, signinSenhaInput, confirmSigninSenha]
+
+            elements.forEach((e) => {
+                e.addEventListener("keydown", (t) => {
+                    if(t.key == "Enter" && signinEmailInput.value && signinNomeInput.value && signinSenhaInput.value) {
+                        validarInfos()
+                    }
+                })
+            })
+        }
+    </script>
 </body>
 </html>
