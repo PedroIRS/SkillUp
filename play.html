@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Play</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="/perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="/login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main class="playMain">
+        <section class="desafioInterface" id="desafioInterface">
+            <div class="desafioInterfaceHeader">
+                <h2 class="pergunta">o que é o que é</h2>
+            </div>
+            <div class="desafioInterfaceContent">
+                <div class="desafioInterfaceContentItem" id="item1">
+                    <h4 class="itemHeader">A</h4>
+                    <h4 class="item1Content">chalala</h4>
+                </div>
+                <div class="desafioInterfaceContentItem" id="item2">
+                    <h4 class="itemHeader">B</h4>
+                    <h4 class="item2Content">chelele</h4>
+                </div>
+                <div class="desafioInterfaceContentItem" id="item3">
+                    <h4 class="itemHeader">C</h4>
+                    <h4 class="item3Content">chilili</h4>
+                </div>
+                <div class="desafioInterfaceContentItem" id="item4">
+                    <h4 class="itemHeader">D</h4>
+                    <h4 class="item4Content">chololo</h4>
+                </div>
+            </div>
+            <h3 id="proxBtt">Proxima pergunta</h3>
+        </section>
+
+        <section class="resultsTable" id="resultsTable">
+            <div class="resultsTableHeader">
+                <h2>Resultados</h2>
+            </div>
+            <div class="resultsTableContent"></div>
+            <h3 id="encerrarBtt">Encerrar</h3>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    <script>
+        window.onload = main()
+
+        async function main() {
+            const parameters = new URLSearchParams(window.location.search)
+            const turma = parameters.get("turma")
+
+            getDesafiosDiarios(turma)
+        }
+    </script>
+</body>
+</html>

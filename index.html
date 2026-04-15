@@ -33,7 +33,8 @@
             <h1>SkillUp:</h1>
             <h1 style="color:#18E0B5">Desafie-se!</h1>
             <p>Transforme seu aprendizado em uma jornada épica. conquiste desafios, suba no ranking e evolua suas habilidades.</p>
-            <button onclick="selectTurma()"><strong>Começar Agora</strong></button>
+            <button onclick="selectTurma()" id="botaoComece"><strong>Começar Agora</strong></button>
+            <button onclick="gerenciarTurmas()" id="gerenciaTurmasBotao" style="display: none;"><strong>Gerenciar Turmas</strong></button>
         </section>
 
         <section class="grayFog"></section>
@@ -44,42 +45,77 @@
                     <h3>Minhas turmas</h3>
                     <p>Participe de turmas e complete desafios exclusivos</p>
                 </div>
-                <button onclick="selectTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</button>
+                <h6 onclick="selectTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
             </div>
-            <div class="userTurmasContent">
+            <div class="userTurmasContent" id="userTurmasContent">
                 <div class="userTurmaContentItem">
-                    <div>
-                        <h4>Nome da turma</h4>
-                        <p>professor da turma</p>
-                    </div>
-                    <button>sair</button>
+                    <h4>Nome da turma</h4>
+                    <p>professor da turma</p>
                 </div>
             </div>
-            <button class="entrarTurmaButton" onclick="entrarTurma()">Entrar em uma nova turma</button>
+            <button class="entrarTurmaButton" onclick="entrarTurmaInterface()">Entrar em uma nova turma</button>
         </section>
 
-        <section class="entrarTurma">
-            <div class="entrarTurmaHeader">
+        <section class="entrarTurmaInterface">
+            <div class="entrarTurmaInterfaceHeader">
                 <div>
                     <h3>Entrar em uma turma</h3>
                     <p>Entre em novas turmas para participar de desafios exclusivos</p>
                 </div>
-                <button onclick="entrarTurma()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</button>
+                <h6 onclick="entrarTurmaInterface()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
             </div>
             <div class="inputBox">
-                <input placeholder="Pesquisar nome da turma" type="text">
+                <input placeholder="Pesquisar nome da turma" type="text" id="pesquisaTurmaInput">
             </div>
-            <div class="entrarTurmaContent">
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
-                <div>lsjdnl</div>
+            <div class="entrarTurmaInterfaceContent" id="entrarTurmaInterfaceContent">
+                <div class="entrarTurmaInterfaceContentItem">
+                    <h4>Nome</h4>
+                    <p>Prof</p>
+                </div>
+            </div>
+        </section>
+
+        <section class="professorTurmas">
+            <section class="professorTurmasHeader">
+                <div>
+                    <h3>Minhas Turmas</h3>
+                    <p>Gerencie suas turmas e crie desafios diarios</p>
+                </div>
+                <h6 onclick="gerenciarTurmas()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
+            </section>
+
+            <section class="professorTurmasContent" id="professorTurmasContent">
+                <div class="professorTurmasContentItem">
+                    <h4>Nome</h4>
+                </div>
+            </section>
+
+            <button onclick="criarTurmaInterface()">Criar nova turma</button>
+        </section>
+
+        <section class="criarTurmaInterface">
+            <div class="criarTurmaInterfaceHeader">
+                <div>
+                    <h3>Criar Nova Turma</h3>
+                </div>
+                <h6 onclick="criarTurmaInterface()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
+            </div>
+
+            <div class="criarTurmaInterfaceContent">
+                <div class="inputBox">
+                    <input type="text" placeholder="Nome da turma" id="criarTurmaNome">
+                </div>
+                <div class="inputBox">
+                    <input type="password" placeholder="Senha da turma" id="criarTurmaSenha">
+                </div>
+                <div class="inputBox">
+                    <input type="password" placeholder="Confirmar senha" id="confirmarTurmaSenha">
+                </div>
+                <div class="descCriarTurma">
+                    <textarea id="criarTurmaDesc" style="resize: none;">Descrição da turma</textarea>
+                </div>
+                <p id="mensagemErro" style="display: none; font-size: 0.8rem; color: red;"></p>
+                <button onclick="validarTurmaInfos()">Criar Turma</button>
             </div>
         </section>
     </main>
@@ -88,8 +124,16 @@
     <script>
         window.onload = main()
 
-        function main() {
-            organizarRanking("rankingIndexContent", 10)
+        async function main() {
+            organizarRanking("rankingIndexContent", "top10")
+            listarTurmas("userTurmasContent", "minhasTurmas")
+            listarTurmas("entrarTurmaInterfaceContent", "entrarTurma")
+            listarTurmas("professorTurmasContent", "professorTurmas")
+
+            const pesquisaTurmaInput = document.getElementById("pesquisaTurmaInput")
+            pesquisaTurmaInput.addEventListener("input", () => {
+                listarTurmas("entrarTurmaInterfaceContent", "query", pesquisaTurmaInput.value)
+            })
         }
 
         function selectTurma() {
@@ -105,8 +149,8 @@
             }
         }
 
-        function entrarTurma() {
-            const entrarTurma = document.querySelector(".entrarTurma")
+        function entrarTurmaInterface() {
+            const entrarTurma = document.querySelector(".entrarTurmaInterface")
             const userTurmas = document.querySelector(".userTurmas")
 
             if (entrarTurma.style.display === "none") {
@@ -115,6 +159,32 @@
             } else {
                 entrarTurma.style.display = "none"
                 userTurmas.style.display = "flex"
+            }
+        }
+
+        function gerenciarTurmas() {
+            const professorTurmas = document.querySelector(".professorTurmas")
+            const fog = document.querySelector(".grayFog")
+
+            if(professorTurmas.style.display == "none") {
+                professorTurmas.style.display = "flex"
+                fog.style.display = "block"
+            } else {
+                professorTurmas.style.display = "none"
+                fog.style.display = "none"
+            }
+        }
+
+        function criarTurmaInterface(){
+            const criarTurma = document.querySelector(".criarTurmaInterface")
+            const professorTurmas = document.querySelector(".professorTurmas")
+
+            if (criarTurma.style.display === "none") {
+                criarTurma.style.display = "flex"
+                professorTurmas.style.display = "none"
+            } else {
+                criarTurma.style.display = "none"
+                professorTurmas.style.display = "flex"
             }
         }
     </script>

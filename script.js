@@ -9,9 +9,13 @@ async function upNav() {
     if(verify) {
         document.getElementById("loginLink").style.display = "none"
         if(verify["isProfessor"]) {
-            document.getElementById("perfilLink").style.display = "inline"
+            document.getElementById("perfilLink").style.display = "none"
+            document.getElementById("botaoComece").style.display = "none"
+            document.getElementById("gerenciaTurmasBotao").style.display = "block"
         } else {
             document.getElementById("perfilLink").style.display = "inline"
+            document.getElementById("botaoComece").style.display = "block"
+            document.getElementById("gerenciaTurmasBotao").style.display = "none"
         }
     }
 }
@@ -53,10 +57,7 @@ async function refreshToken() {
     }
 }
 
-async function login() {
-    const email = document.getElementById("loginEmailInput").value;
-    const senha = document.getElementById("loginSenhaInput").value;
-
+async function login(email=document.getElementById("loginEmailInput").value, senha=document.getElementById("loginSenhaInput").value) {
     const response = await fetch("http://127.0.0.1:8000/auth/login", {
         method: "POST",
         credentials: "include",
@@ -122,7 +123,10 @@ async function signin(nome, email, senha, isProfessor) {
     });
 
     const data = await response.json();
-    console.log(data)
+    if(response.status == 200) {
+        console.log(data)
+        login(email, senha)
+    }
     if(response.status == 400) {
         document.getElementById("mensagemErro").style.display = "block";
         document.getElementById("mensagemErro").textContent = "O e-mail já está cadastrado";
@@ -183,7 +187,8 @@ async function editarPerfil() {
             document.getElementById("nomeUser").style.display = "block"
             document.getElementById("editarNome").style.display = "none"
             document.getElementById("desc").style.display = "block"
-            document.getElementById("editarDesc").style.display = "none"
+            document.getElementById("editarDesc").style.display = "none"    
+            document.getElementById("nivel").style.display = "inline-block"
             window.location.reload()
         } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
             const refresh = await refreshToken()
@@ -220,8 +225,8 @@ async function getUserConquistas(idUser) {
     return data
 }
 
-async function atualizarConquistas() {
-    const response = await fetch("http://127.0.0.1:8000/profile/atualizarConquistas", {
+async function atualizarConquistas(idUser) {
+    const response = await fetch(`http://127.0.0.1:8000/profile/atualizarConquistas/${idUser}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -284,12 +289,12 @@ async function getRanking() {
 }
 
 
-async function organizarRanking(espaco, num) {
+async function organizarRanking(espaco, type, query="") {
     const rank = await getRanking()
     const rankingGeral = document.getElementById(espaco)
     console.log(rank)
 
-    if(num == "ranking") {
+    if(type == "ranking") {
         document.getElementById("numParticipantes").textContent = Object.keys(rank).length
         const verify = await verificar()
         if (verify) {
@@ -350,10 +355,10 @@ async function organizarRanking(espaco, num) {
             div.appendChild(p)
             rankingGeral.appendChild(div)
         }
-    } else {
+    } else if(type == "top10") {
         let count = 0
         for (let i in rank) {
-            if(count >= num) break
+            if(count >= 10) break
 
             const div = document.createElement("div")
             div.classList.add("rankingGeralContent")
@@ -390,6 +395,46 @@ async function organizarRanking(espaco, num) {
             rankingGeral.appendChild(div)
             
             count++
+        }
+    } else if(type == "query") {
+        rankingGeral.replaceChildren()
+
+        for (let i in rank) {
+            if(rank[i]["nome"].includes(query)) {
+                const div = document.createElement("div")
+                div.classList.add("rankingGeralContent")
+
+                const pos = document.createElement("h4")
+                pos.textContent = i
+                pos.style.color = "#8FA3AD"
+
+                const h4 = document.createElement("h4")
+                h4.textContent = rank[i]["nome"]
+                h4.style.cursor = "pointer"
+                h4.onclick = function() {window.location.href = `./perfil.html?id=${rank[i]["idUser"]}`}
+
+                const p = document.createElement("p")
+                p.textContent = `${rank[i]["pontos"]} pts`
+
+                if (i==1) {
+                    div.style.backgroundColor = "#2A2410"
+                    div.style.border = "solid 0.1rem #F2C94C"
+                    div.style.borderRadius = "0.8rem"
+                } else if (i==2) {
+                    div.style.backgroundColor = "#1E2428"
+                    div.style.border = "solid 0.1rem #C0C7CF"
+                    div.style.borderRadius = "0.8rem"
+                } else if (i==3) {
+                    div.style.backgroundColor = "#2A1F17"
+                    div.style.border = "solid 0.1rem #CD7F32"
+                    div.style.borderRadius = "0.8rem"
+                }
+
+                div.append(pos)
+                div.appendChild(h4)
+                div.appendChild(p)
+                rankingGeral.appendChild(div)
+            }
         }
     }
 }
@@ -504,3 +549,450 @@ async function deletarConta() {
     }
 }
 
+
+async function validarTurmaInfos() {
+    const nome = document.getElementById("criarTurmaNome").value
+    const senha = document.getElementById("criarTurmaSenha").value
+    const confirmSenha = document.getElementById("confirmarTurmaSenha").value
+    const desc = document.getElementById("criarTurmaDesc").value
+
+    if(senha.length >= 8) {
+        if(!senha.includes(" ")) {
+            if(senha == confirmSenha) {
+                criarTurma(nome, senha, desc)
+            } else {
+                document.getElementById("mensagemErro").style.display = "block";
+                document.getElementById("mensagemErro").textContent = "As senhas não coincidem";
+            }
+
+        } else {
+            document.getElementById("mensagemErro").style.display = "block";
+            document.getElementById("mensagemErro").textContent = "A senha não pode ter espaços";
+        }
+
+    } else {
+        document.getElementById("mensagemErro").style.display = "block";
+        document.getElementById("mensagemErro").textContent = "A senha deve ter 8 dígitos";
+    }
+}
+
+
+async function criarTurma(nome, senha, desc) {
+    const response = await fetch("http://127.0.0.1:8000/turmas/criar", {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            "nome": nome,
+            "senha": senha,
+            "desc": desc
+        })
+    })
+    const data = await response.json()
+    console.log(data["detail"])
+
+    if(response.status == 200) {
+        console.log(data)
+    }
+}
+
+
+async function listarTurmas(espaco, type, query="") {
+    const locate = document.getElementById(espaco)
+
+    const response = await fetch("http://127.0.0.1:8000/turmas/listarTurmas", {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    const data = await response.json()
+    console.log(data)
+
+    if(type == "minhasTurmas") {
+        for(let i in data["turmas"]) {
+            if(data["userTurmas"].includes(data["turmas"][i]["id"])) {
+                const div = document.createElement("div")
+                div.classList.add("userTurmaContentItem")
+                div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
+
+                const h4 = document.createElement("h4")
+                h4.textContent = data["turmas"][i]["nome"]
+                const p = document.createElement("p")
+                p.textContent = "Nome do prof"
+
+                div.appendChild(h4)
+                div.appendChild(p)
+                locate.appendChild(div)
+            }
+        }
+    } else if(type == "entrarTurma") {
+        for(let i in data["turmas"]) {
+            const div = document.createElement("div")
+            div.classList.add("entrarTurmaInterfaceContentItem")
+            div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
+
+            const h4 = document.createElement("h4")
+            h4.textContent = data["turmas"][i]["nome"]
+            const p = document.createElement("p")
+            p.textContent = "Nome do prof"
+
+            div.appendChild(h4)
+            div.appendChild(p)
+            locate.appendChild(div)
+        }
+    } else if(type == "query") {
+        locate.replaceChildren()
+
+        for(let i in data["turmas"]) {
+            if(data["turmas"][i]["nome"].includes(query)) {
+                const div = document.createElement("div")
+                div.classList.add("entrarTurmaInterfaceContentItem")
+                div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
+
+                const h4 = document.createElement("h4")
+                h4.textContent = data["turmas"][i]["nome"]
+                const p = document.createElement("p")
+                p.textContent = "Nome do prof"
+
+                div.appendChild(h4)
+                div.appendChild(p)
+                locate.appendChild(div)
+            }
+        }
+    } else if(type == "professorTurmas") {
+        const verify = await verificar()
+        if(verify && verify.isProfessor) {
+            for(let i in data["turmas"]) {
+                if(data["turmas"][i]["idProfessor"] == verify.id) {
+                    const div = document.createElement("div")
+                    div.classList.add("professorTurmasContentItem")
+                    div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
+
+                    const h4 = document.createElement("h4")
+                    h4.textContent = data["turmas"][i]["nome"]
+
+                    div.appendChild(h4)
+                    locate.appendChild(div)
+                }
+            }
+        }
+    }
+}
+
+
+async function entrarTurma(idTurma, senha) {
+    const response = await fetch(`http://127.0.0.1:8000/turmas/entrar/${idTurma}`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            senha: senha
+        })
+    })
+    const data = await response.json()
+    console.log(data)
+
+    if(response.status == 200) {
+        console.log(data)
+        window.location.reload()
+    }
+}
+
+
+async function sairTurma(idTurma) {
+    const response = await fetch(`http://127.0.0.1:8000/turmas/sair/${idTurma}`, {
+        method: "DELETE",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    const data = response.json()
+
+    if(response.status == 200) {
+        console.log("Sucesso")
+        window.location.reload()
+    }
+}
+
+
+async function turmaInfos(idTurma) {
+    const response = await fetch(`http://127.0.0.1:8000/turmas/turmaInfos/${idTurma}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    const data = await response.json()
+    console.log(data)
+    if(response.status == 200) {
+        const nome = document.getElementById("nomeTurma")
+        const prof = document.getElementById("profTurma")
+        const desc = document.getElementById("descTurma")
+
+        nome.textContent = data["nome"]
+        prof.textContent = `Professor ${data["nomeProf"]}`
+        desc.textContent = data["desc"]
+
+        const verify = await verificar()
+        if(verify && !verify.isProfessor) {
+            document.querySelector(".turmaDesafiosProf").style.display = "none"
+
+            if(Object.hasOwn(data["alunos"], verify.id)) {
+                document.querySelector(".turmaConfigAlunoOn").style.display = "flex"
+                document.querySelector(".turmaConfigAlunoOff").style.display = "none"
+                document.querySelector(".turmaDesafio").style.display = "block"
+                document.querySelector(".turmaDesafiosAluno").style.display = "flex"
+            } else {
+                document.querySelector(".turmaConfigAlunoOn").style.display = "none"
+                document.querySelector(".turmaConfigAlunoOff").style.display = "flex"
+                document.querySelector(".turmaDesafio").style.display = "none"
+            }
+        } else if(verify && verify.isProfessor && data["idProf"] == verify.id){
+            document.querySelector(".turmaDesafiosProf").style.display = "flex"
+            document.querySelector(".turmaDesafiosAluno").style.display = "none"
+        } else {
+            document.querySelector(".turmaConfig").style.display = "none"
+            document.querySelector(".turmaDesafio").style.display = "none"
+        }
+
+        const locate = document.getElementById("turmaAlunosContent")
+
+        for(let i in data["alunos"]) {
+            const div = document.createElement("div")
+            div.classList.add("turmaAlunosContentItem")
+
+            const h3 = document.createElement("h3")
+            h3.textContent = data["alunos"][i]["nome"]
+            h3.onclick = () => {window.location.href = `/perfil.html?id=${i}`}
+            const p = document.createElement("p")
+            p.textContent = `${data["alunos"][i]["pontos"]} pts`
+
+            div.appendChild(h3)
+            div.appendChild(p)
+            locate.appendChild(div)
+        }
+    }
+}
+
+
+async function criarDesafio(idTurma) {
+    const pergunta = document.getElementById("perguntaInput").value
+    const item1 = document.getElementById("item1Input").value
+    const item2 = document.getElementById("item2Input").value
+    const item3 = document.getElementById("item3Input").value
+    const item4 = document.getElementById("item4Input").value
+    const itemCorreto = document.getElementById("itemCorretoInput").value
+    const dataDesafio = document.getElementById("dataInput").value
+
+    const response = await fetch(`http://127.0.0.1:8000/desafios/criar`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            idTurma: idTurma,
+            pergunta: pergunta,
+            data: dataDesafio,
+            item1: item1,
+            item2: item2,
+            item3: item3,
+            item4: item4,
+            itemCorreto: itemCorreto
+        })
+    })
+    const data = await response.json()
+    if(response.status == 200) {
+        return true
+    }
+}
+
+
+async function listarUserDesafios() {
+    const response = await fetch(`http://127.0.0.1:8000/desafios/listar`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    const data = await response.json()
+    if(response.status == 200) {
+        console.log(data)
+        return data
+    }
+}
+
+
+async function getDesafiosDiarios (idTurma) {
+    const response = await fetch(`http://127.0.0.1:8000/desafios/desafiosDiarios/${idTurma}`, {
+        method: "GET",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        }
+    })
+    const data = await response.json()
+    if(response.status == 200) {
+        console.log(data)
+
+        const numeroDesafios = data.length
+        let results = {}
+        const userDesafios = await listarUserDesafios()
+
+        const pergunta = document.querySelector(".pergunta")
+        const item1Content = document.querySelector(".item1Content")
+        const item2Content = document.querySelector(".item2Content")
+        const item3Content = document.querySelector(".item3Content")
+        const item4Content = document.querySelector(".item4Content")
+        play(0)
+
+        function play (i) {
+            const itens = document.querySelectorAll(".desafioInterfaceContentItem")
+            itens.forEach((e) => {
+                e.style.backgroundColor = "#0E2A36"
+                e.style.borderColor = "#35576b"
+            })
+            
+            const itemCorreto = document.getElementById(`item${data[i]["itemCorreto"]}`)
+            const proxBtt = document.getElementById("proxBtt")
+            proxBtt.style.display = "none"
+            proxBtt.onclick = () => {play(i + 1)}
+
+            pergunta.textContent = `${i + 1}. ${data[i]["pergunta"]}`
+            item1Content.textContent = data[i]["item1"]
+            item2Content.textContent = data[i]["item2"]
+            item3Content.textContent = data[i]["item3"]
+            item4Content.textContent = data[i]["item4"]
+
+            itemCorreto.onclick = () => {
+                console.log("acertou")
+                results[data[i]["id"]] = true
+                console.log(results)
+
+                if(i + 1 < numeroDesafios) {
+                    itemCorreto.style.backgroundColor = "#12363C"
+                    itemCorreto.style.borderColor = "#10CFA6"
+                    proxBtt.style.display = "block"
+                    invalidar()
+                } else {
+                    itemCorreto.style.backgroundColor = "#12363C"
+                    itemCorreto.style.borderColor = "#10CFA6"
+                    proxBtt.style.display = "block"
+                    proxBtt.textContent = "Ver resultados"
+                    invalidar()
+                    proxBtt.onclick = () => {showResults()}
+                }
+            }
+            itens.forEach( (e) => {
+                if(e != itemCorreto) {
+                    e.onclick = () => {
+                        console.log("erro")
+                        results[data[i]["id"]] = false
+                        console.log(results)
+
+                        if(i + 1 < numeroDesafios) {
+                            e.style.backgroundColor = "#8B1E1E"
+                            e.style.borderColor = "#FF4D4D"
+                            proxBtt.style.display = "block"
+                            invalidar()
+                        } else {
+                            e.style.backgroundColor = "#8B1E1E"
+                            e.style.borderColor = "#FF4D4D"
+                            proxBtt.textContent = "Ver resultados"
+                            proxBtt.style.display = "block"
+                            invalidar()
+                            proxBtt.onclick = () => {showResults()}
+                        }
+                    }
+                }
+            })
+
+            function invalidar() {
+                itens.forEach((e) => {e.onclick = null})
+            }
+        }
+
+        function showResults() {
+            const locate = document.querySelector(".resultsTableContent")
+            const proxBtt = document.getElementById("encerrarBtt")
+            proxBtt.onclick = () => {window.location.href = `/turma.html?id=${idTurma}`}
+
+            document.getElementById("desafioInterface").style.display = "none"
+            document.getElementById("resultsTable").style.display = "block"
+
+            for(let i in data) {
+                if(results[data[i]["id"]]) {
+                    const div = document.createElement("div")
+                    div.classList.add("resultsTableContentItem")
+                    div.style.backgroundColor = "#12363C"
+                    div.style.borderColor = "#10CFA6"
+
+                    const pergunta = document.createElement("h3")
+                    const itemCorreto = document.createElement("p")
+                    const p = document.createElement("p")
+                    p.textContent = "Resposta Correta:"
+
+                    pergunta.textContent = data[i]["pergunta"]
+                    itemCorreto.textContent = data[i][`item${data[i]["itemCorreto"]}`]
+                    itemCorreto.style.color = "#18E0B5"
+
+                    div.appendChild(pergunta)
+                    div.appendChild(p)
+                    div.appendChild(itemCorreto)
+                    locate.appendChild(div)
+                } else {
+                    const div = document.createElement("div")
+                    div.classList.add("resultsTableContentItem")
+                    div.style.backgroundColor = "#8B1E1E"
+                    div.style.borderColor = "#FF4D4D"
+
+                    const pergunta = document.createElement("h3")
+                    const itemCorreto = document.createElement("p")
+                    const p = document.createElement("p")
+                    p.textContent = "Resposta Correta:"
+
+                    pergunta.textContent = data[i]["pergunta"]
+                    itemCorreto.textContent = data[i][`item${data[i]["itemCorreto"]}`]
+                    itemCorreto.style.color = "#18E0B5"
+
+                    div.appendChild(pergunta)
+                    div.appendChild(p)
+                    div.appendChild(itemCorreto)
+                    locate.appendChild(div)
+                }
+            }
+
+            for(let i in results) {
+                completarDesafio(i, results[i])
+            }
+        }
+    }
+}
+
+
+async function completarDesafio(idDesafio, condition) {
+    const response = await fetch(`http://127.0.0.1:8000/desafios/completar`, {
+        method: "POST",
+        credentials: "include",
+        headers: {
+            'content-type': 'application/json'
+        },
+        body: JSON.stringify({
+            idDesafio: idDesafio,
+            acerto: condition
+        })
+    })
+    const data = await response.json()
+    if(response.status == 200) {
+        console.log(data)
+    }
+}

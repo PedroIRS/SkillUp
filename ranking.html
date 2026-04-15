@@ -39,6 +39,13 @@
                 </div>
             </div>
         </section>
+
+        <section class="barraPesquisaRanking">
+            <div class="inputBox">
+                <input type="text" id="pesquisarJogador"  placeholder="Buscar jogador">
+            </div>
+        </section>
+
         <section class="top3">
             <div class="lugar2">
                 <h3 id="lugar2Nome">2° lugar</h3>
@@ -69,6 +76,9 @@
         function main() {
             atualizarRanking()
             organizarRanking("rankingGeralPos", "ranking")
+
+            const input = document.getElementById("pesquisarJogador")
+            input.addEventListener("input", () => {organizarRanking('rankingGeralPos', 'query', document.getElementById('pesquisarJogador').value)})
         }
     </script>
 </body>

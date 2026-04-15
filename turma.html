@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SkillUp - Turma</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
+        <div>
+            <a href="/perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="/login.html" id="loginLink">Login</a>
+            <a href="/ranking.html">Ranking</a>
+            <a href="/configuracoes.html">Configurações</a>
+        </div>
+    </nav>
+
+    <main class="turmaMain">
+        <section class="leftSide">
+            <div class="turmaInfos">
+                <h2 id="nomeTurma">-</h2>
+                <h5 id="profTurma">-</h5>
+                <p id="descTurma">-</p>
+            </div>
+
+            <div class="turmaDesafio">
+                <div class="turmaDesafiosAluno">
+                    <h4>Concluir os desafios diarios desta turma!</h4>
+                    <button id="turmaDesafioAlunoBtt">Comece</button>
+                </div>
+
+                <div class="turmaDesafiosProf">
+                    <h4>Criar um novo desafio para esta turma</h4>
+                    <button onclick="criarTurmaInterface()">Criar</button>
+                </div>
+            </div>
+            
+            <div class="turmaConfig">
+                <div class="turmaConfigAlunoOn">
+                    <h4>Sair dessa Turma</h4>
+                    <button onclick="confirmarSaida()">Sair</button>
+                </div>
+
+                <div class="turmaConfigAlunoOff">
+                    <h4>Entrar nesta Turma</h4>
+                    <button onclick="revelarSenhaInput()" id="botaoRevelarInputSenha">Entrar</button>
+                    <div id="turmaSenha" class="inputBox">
+                        <input placeholder="Senha da turma" type="password" id="turmaSenhaInput">
+                    </div>
+                </div>
+
+                <div class="turmaConfigProf"></div>
+            </div>
+        </section>
+
+        <section class="rightSide">
+            <div class="turmaAlunos">
+                <div class="turmaAlunosHeader">
+                    <h2>Alunos nesta</h2>
+                    <h2 style="color: #18E0B5;">Turma</h2>
+                </div>
+
+                <div class="turmaAlunosContent" id="turmaAlunosContent">
+                    <div class="turmaAlunosContentItem" id="turmaAlunosContentItem">
+                        <h3>Nominho</h3>
+                        <p>pontinhos</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="grayFog"></section>
+
+        <section class="criarDesafioInterface">
+            <div style="display: flex; flex-flow: row;">
+                <h3>Crie novos desafios</h3>
+                <h6 onclick="criarTurmaInterface()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
+            </div>
+            <div class="inputBox">
+                <input type="text" placeholder="Pergunta" id="perguntaInput">
+            </div>
+            <div>
+                <div class="inputBox">
+                    <input type="text" placeholder="Item 1" id="item1Input">
+                </div>
+                <div class="inputBox">
+                    <input type="text" placeholder="Item 2" id="item2Input">
+                </div>
+                <div class="inputBox">
+                    <input type="text" placeholder="Item 3" id="item3Input">
+                </div>
+                <div class="inputBox">
+                    <input type="text" placeholder="Item 4" id="item4Input">
+                </div>
+            </div>
+            <div class="inputBox">
+                <input type="text" placeholder="Item correto" id="itemCorretoInput">
+            </div>
+            <div class="inputBox">
+                <input type="text" placeholder="data" id="dataInput">
+            </div>
+            <button id="criarDesafioBtt">Criar</button>
+        </section>
+
+        <section class="confirmarSairTurma">
+            <h3>Tem certeza que deseja sair da conta?</h3>
+            <button id="sairBtt">Sair da conta</button>
+            <button onclick="confirmarSaida()">Cancelar</button>
+        </section>
+    </main>
+
+    <script src="script.js"></script>
+
+    <script>
+        window.onload = main()
+
+        async function main() {
+            const parameters = new URLSearchParams(window.location.search);
+            const idTurma = parameters.get("id")
+            turmaInfos(idTurma)
+
+            const senhaInput = document.getElementById("turmaSenhaInput")
+            senhaInput.addEventListener("keydown", (e) => {
+                if(e.key == "Enter") {
+                    entrarTurma(idTurma, senhaInput.value)
+                }
+            })
+
+            const sairBtt = document.getElementById("sairBtt")
+            sairBtt.addEventListener("click", () => {
+                sairTurma(idTurma)
+            })
+
+            const criarDesafioBtt = document.getElementById("criarDesafioBtt")
+            criarDesafioBtt.addEventListener("click", async () => {
+                const resp = await criarDesafio(idTurma)
+                if(resp) {
+                    criarTurmaInterface()
+                }
+            })
+
+            const turmaDesafioAlunoBtt = document.getElementById("turmaDesafioAlunoBtt")
+            turmaDesafioAlunoBtt.addEventListener("click", () => {
+                window.location.href = `/play.html?turma=${idTurma}`
+            })
+        }
+
+        function revelarSenhaInput() {
+            const turmaSenha = document.getElementById("turmaSenha")
+            const btt = document.getElementById("botaoRevelarInputSenha")
+
+            if(turmaSenha.style.display == "none") {
+                turmaSenha.style.display = "block"
+                btt.textContent = "Cancelar"
+            } else {
+                turmaSenha.style.display = "none"
+                btt.textContent = "Entrar"
+            }
+        }
+
+        function confirmarSaida() {
+            const confirm = document.querySelector(".confirmarSairTurma")
+            const fog = document.querySelector(".grayFog")
+
+            if(confirm.style.display == "none") {
+                confirm.style.display = "flex"
+                fog.style.display = "block"
+            } else {
+                confirm.style.display = "none"
+                fog.style.display = "none"
+            }
+        }
+
+        function criarTurmaInterface() {
+            const interface = document.querySelector(".criarDesafioInterface")
+            const fog = document.querySelector(".grayFog")
+
+            if(interface.style.display == "none") {
+                interface.style.display = "flex"
+                fog.style.display = "block"
+            } else {
+                interface.style.display = "none"
+                fog.style.display = "none"
+            }
+        }
+    </script>
+</body>
+</html>

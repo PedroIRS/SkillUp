@@ -25,7 +25,7 @@
                     <h6 id="nivel">Nivel X</h6>
                     <input type="text" class="edicaoPerfil" id="editarNome">
                     <p id="desc">-</p>
-                    <textarea class="edicaoPerfil" id="editarDesc">Fale um pouco sobre você</textarea>
+                    <textarea class="edicaoPerfil" id="editarDesc" style="resize: none;">Fale um pouco sobre você</textarea>
                 </div>
                 <div class="infosButton">
                     <button id="editarPerfil" onclick="editar()" style="display: none;">Editar perfil</button>
@@ -95,7 +95,7 @@
             }
 
             await getInfos(idUser);
-            await atualizarConquistas();
+            await atualizarConquistas(idUser);
             await conquistasList(idUser);
             
             const verify = await verificar()
@@ -106,6 +106,7 @@
 
         function editar() {
             document.getElementById("editarPerfil").style.display = "none"
+            document.getElementById("nivel").style.display = "none"
             document.getElementById("confirmEdicao").style.display = "block"
 
             document.getElementById("nomeUser").style.display = "none"
