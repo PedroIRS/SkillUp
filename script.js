@@ -74,7 +74,7 @@ async function login(email=document.getElementById("loginEmailInput").value, sen
     const data = await response.json();
     if (response.status == 200) {
         console.log(data, response.status)
-        window.location.href = "/";
+        window.location.href = "./";
     } else if (response.status == 400 || response.status == 404) {
         document.getElementById("mensagemErro").style.display = "block";
     }
