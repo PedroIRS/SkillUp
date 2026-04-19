@@ -10,10 +10,10 @@
     <nav>
         <a href="/" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
         <div>
-            <a href="/perfil.html" id="perfilLink" style="display: none;">Perfil</a>
-            <a href="/login.html" id="loginLink">Login</a>
-            <a href="/ranking.html">Ranking</a>
-            <a href="/configuracoes.html">Configurações</a>
+            <a href="./perfil.html" id="perfilLink" style="display: none;">Perfil</a>
+            <a href="./login.html" id="loginLink">Login</a>
+            <a href="./ranking.html">Ranking</a>
+            <a href="./configuracoes.html">Configurações</a>
         </div>
     </nav>
 
@@ -94,20 +94,28 @@
                 <input type="text" placeholder="Item correto" id="itemCorretoInput">
             </div>
             <div class="inputBox">
-                <input type="text" placeholder="data" id="dataInput">
+                <input type="date" placeholder="data" id="dataInput">
             </div>
             <p id="menssagemErroDesafio" style="color: red; display: none;">mensagem de erro</p>
             <button id="criarDesafioBtt">Criar</button>
         </section>
 
         <section class="confirmarSairTurma">
-            <h3>Tem certeza que deseja sair da conta?</h3>
-            <button id="sairBtt">Sair da conta</button>
+            <h3>Tem certeza que deseja sair desta turma?</h3>
+            <button id="sairBtt">Sair da turma</button>
             <button onclick="confirmarSaida()">Cancelar</button>
         </section>
     </main>
 
     <script src="script.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+
+    <script>
+        flatpickr("#dataInput", {
+            dateFormat: "d/m/Y",
+        });
+    </script>
 
     <script>
         window.onload = main()
@@ -131,8 +139,8 @@
 
             const criarDesafioBtt = document.getElementById("criarDesafioBtt")
             criarDesafioBtt.addEventListener("click", async () => {
-                const respostaItem = document.getElementById("itemCorretoInput")
-                if(!["1", "2", "3", "4"].includes(respostaItem)) {
+                const respostaItem = document.getElementById("itemCorretoInput").value
+                if(["1", "2", "3", "4"].includes(respostaItem)) {
                     const resp = await criarDesafio(idTurma)
                     if(resp) {
                         criarTurmaInterface()

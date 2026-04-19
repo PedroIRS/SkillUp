@@ -1527,7 +1527,7 @@ main {
     border-radius: 0.8rem;
     position: absolute;
     display: none;
-    top: 50%;
+    top: 30%;
     left: 30%;
     flex-flow: column wrap;
     padding: 1rem;

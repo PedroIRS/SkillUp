@@ -16,12 +16,14 @@ async function upNav() {
             document.getElementById("perfilLink").style.display = "inline"
             document.getElementById("botaoComece").style.display = "block"
             document.getElementById("gerenciaTurmasBotao").style.display = "none"
+
+            document.getElementById("perfilLink").href = `perfil.html?id=${verify.id}`
         }
     }
 }
 
 async function verificar() {
-    const response = await fetch('http://127.0.0.1:8000/auth/me', {
+    const response = await fetch('https://skillup-api-qxon.onrender.com/auth/me', {
     method: 'GET',
     credentials:"include",
     headers: {
@@ -400,7 +402,7 @@ async function organizarRanking(espaco, type, query="") {
         rankingGeral.replaceChildren()
 
         for (let i in rank) {
-            if(rank[i]["nome"].includes(query)) {
+            if(rank[i]["nome"].toLocaleLowerCase().includes(query.toLocaleLowerCase())) {
                 const div = document.createElement("div")
                 div.classList.add("rankingGeralContent")
 
