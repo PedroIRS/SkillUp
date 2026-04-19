@@ -62,7 +62,6 @@ async function refreshToken() {
 async function login(email=document.getElementById("loginEmailInput").value, senha=document.getElementById("loginSenhaInput").value) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/login", {
         method: "POST",
-        credentials: "include",
         headers: {
         "Content-Type": "application/json"
         },
@@ -240,7 +239,6 @@ async function atualizarConquistas(idUser) {
 async function conquistas() {
     const response = await fetch("https://skillup-api-qxon.onrender.com/profile/conquistas", {
         method: "GET",
-        credentials: "include",
         headers: {
             'Content-Type': 'application/json'
         },
@@ -302,7 +300,6 @@ async function organizarRanking(espaco, type, query="") {
         if (verify) {
             const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getinfo/${verify["id"]}`, {
             method: 'GET',
-            credentials: "include",
             headers: {
                 'Content-Type': 'application/json'
                 }
@@ -737,7 +734,6 @@ async function sairTurma(idTurma) {
 async function turmaInfos(idTurma) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/turmaInfos/${idTurma}`, {
         method: "GET",
-        credentials: "include",
         headers: {
             'content-type': 'application/json'
         }
