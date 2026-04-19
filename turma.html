@@ -49,6 +49,7 @@
                     <button onclick="revelarSenhaInput()" id="botaoRevelarInputSenha">Entrar</button>
                     <div id="turmaSenha" class="inputBox">
                         <input placeholder="Senha da turma" type="password" id="turmaSenhaInput">
+                        <p id="mensagemErroTurmaSenha" style="display: none; font-size: 0.8rem; color: red;">E-mail ou senha inválidos</p>
                     </div>
                 </div>
 
@@ -155,7 +156,7 @@
 
             const turmaDesafioAlunoBtt = document.getElementById("turmaDesafioAlunoBtt")
             turmaDesafioAlunoBtt.addEventListener("click", () => {
-                window.location.href = `/play.html?turma=${idTurma}`
+                window.location.href = `./play.html?turma=${idTurma}`
             })
         }
 

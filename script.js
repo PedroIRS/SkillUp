@@ -16,8 +16,6 @@ async function upNav() {
             document.getElementById("perfilLink").style.display = "inline"
             document.getElementById("botaoComece").style.display = "block"
             document.getElementById("gerenciaTurmasBotao").style.display = "none"
-
-            document.getElementById("perfilLink").href = `perfil.html?id=${verify.id}`
         }
     }
 }
@@ -162,7 +160,7 @@ async function getInfos(idUser) {
         document.getElementById("xpAtual").style.width = `${(data["xp"] * 100) / (100 * (1.5 ** data["nivel"]))}%`
     } else {
         alert("Usuário não encontrado")
-        window.location.href = "/"
+        window.location.href = "./"
     }
 }
 
@@ -506,7 +504,6 @@ async function editarNome() {
 }
 
 
-
 async function logout() {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/logout", {
         method: "POST",
@@ -606,6 +603,16 @@ async function criarTurma(nome, senha, desc) {
             criarTurma.style.display = "none"
             professorTurmas.style.display = "flex"
         }
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            criarTurma(nome, senha, desc)
+        } else {
+            window.location.href = "./"
+            alert("Não autorizado")
+        }
+    } else if(response.status == 401 && data["detail"] == "Acesso restrito, apenas professores.") {
+        alert("Somente professores podem realizar esta ação")
     }
 }
 
@@ -623,73 +630,80 @@ async function listarTurmas(espaco, type, query="") {
     const data = await response.json()
     console.log(data)
 
-    if(type == "minhasTurmas") {
-        for(let i in data["turmas"]) {
-            if(data["userTurmas"].includes(data["turmas"][i]["id"])) {
-                const div = document.createElement("div")
-                div.classList.add("userTurmaContentItem")
-                div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
-
-                const h4 = document.createElement("h4")
-                h4.textContent = data["turmas"][i]["nome"]
-                const p = document.createElement("p")
-                p.textContent = "Nome do prof"
-
-                div.appendChild(h4)
-                div.appendChild(p)
-                locate.appendChild(div)
-            }
-        }
-    } else if(type == "entrarTurma") {
-        for(let i in data["turmas"]) {
-            const div = document.createElement("div")
-            div.classList.add("entrarTurmaInterfaceContentItem")
-            div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
-
-            const h4 = document.createElement("h4")
-            h4.textContent = data["turmas"][i]["nome"]
-            const p = document.createElement("p")
-            p.textContent = "Nome do prof"
-
-            div.appendChild(h4)
-            div.appendChild(p)
-            locate.appendChild(div)
-        }
-    } else if(type == "query") {
-        locate.replaceChildren()
-
-        for(let i in data["turmas"]) {
-            if(data["turmas"][i]["nome"].includes(query)) {
-                const div = document.createElement("div")
-                div.classList.add("entrarTurmaInterfaceContentItem")
-                div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
-
-                const h4 = document.createElement("h4")
-                h4.textContent = data["turmas"][i]["nome"]
-                const p = document.createElement("p")
-                p.textContent = "Nome do prof"
-
-                div.appendChild(h4)
-                div.appendChild(p)
-                locate.appendChild(div)
-            }
-        }
-    } else if(type == "professorTurmas") {
-        const verify = await verificar()
-        if(verify && verify.isProfessor) {
+    if(response.status == 200) {
+        if(type == "minhasTurmas") {
             for(let i in data["turmas"]) {
-                if(data["turmas"][i]["idProfessor"] == verify.id) {
+                if(data["userTurmas"].includes(data["turmas"][i]["id"])) {
                     const div = document.createElement("div")
-                    div.classList.add("professorTurmasContentItem")
-                    div.onclick = () => {window.location.href = `/turma.html?id=${data["turmas"][i]["id"]}`}
+                    div.classList.add("userTurmaContentItem")
+                    div.onclick = () => {window.location.href = `./turma.html?id=${data["turmas"][i]["id"]}`}
 
                     const h4 = document.createElement("h4")
                     h4.textContent = data["turmas"][i]["nome"]
+                    const p = document.createElement("p")
+                    p.textContent = "Nome do prof"
 
                     div.appendChild(h4)
+                    div.appendChild(p)
                     locate.appendChild(div)
                 }
             }
+        } else if(type == "entrarTurma") {
+            for(let i in data["turmas"]) {
+                const div = document.createElement("div")
+                div.classList.add("entrarTurmaInterfaceContentItem")
+                div.onclick = () => {window.location.href = `./turma.html?id=${data["turmas"][i]["id"]}`}
+
+                const h4 = document.createElement("h4")
+                h4.textContent = data["turmas"][i]["nome"]
+                const p = document.createElement("p")
+                p.textContent = "Nome do prof"
+
+                div.appendChild(h4)
+                div.appendChild(p)
+                locate.appendChild(div)
+            }
+        } else if(type == "query") {
+            locate.replaceChildren()
+
+            for(let i in data["turmas"]) {
+                if(data["turmas"][i]["nome"].includes(query)) {
+                    const div = document.createElement("div")
+                    div.classList.add("entrarTurmaInterfaceContentItem")
+                    div.onclick = () => {window.location.href = `./turma.html?id=${data["turmas"][i]["id"]}`}
+
+                    const h4 = document.createElement("h4")
+                    h4.textContent = data["turmas"][i]["nome"]
+                    const p = document.createElement("p")
+                    p.textContent = "Nome do prof"
+
+                    div.appendChild(h4)
+                    div.appendChild(p)
+                    locate.appendChild(div)
+                }
+            }
+        } else if(type == "professorTurmas") {
+            const verify = await verificar()
+            if(verify && verify.isProfessor) {
+                for(let i in data["turmas"]) {
+                    if(data["turmas"][i]["idProfessor"] == verify.id) {
+                        const div = document.createElement("div")
+                        div.classList.add("professorTurmasContentItem")
+                        div.onclick = () => {window.location.href = `./turma.html?id=${data["turmas"][i]["id"]}`}
+
+                        const h4 = document.createElement("h4")
+                        h4.textContent = data["turmas"][i]["nome"]
+
+                        div.appendChild(h4)
+                        locate.appendChild(div)
+                    }
+                }
+            }
+        }
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            listarTurmas(espaco, type, query)
         }
     }
 }
@@ -712,6 +726,20 @@ async function entrarTurma(idTurma, senha) {
     if(response.status == 200) {
         console.log(data)
         window.location.reload()
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            entrarTurma(idTurma, senha)
+        } else {
+            window.location.href = "./"
+            alert("Não autorizado")
+        }
+    } else if(response.status == 404) {
+        alert("Turma não encontrada")
+    } else if(response.status == 401 && data["detail"] == "Senha incorreta") {
+        const mensagemErro = document.getElementById("mensagemErroTurmaSenha")
+        mensagemErro.textContent = "senha incorreta"
+        mensagemErro.style.display = "block"
     }
 }
 
@@ -729,6 +757,16 @@ async function sairTurma(idTurma) {
     if(response.status == 200) {
         console.log("Sucesso")
         window.location.reload()
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        const refresh = await refreshToken()
+        if(refresh) {
+            sairTurma(idTurma)
+        } else {
+            window.location.href = "./"
+            alert("Não autorizado")
+        }
+    } else if(response.status == 404) {
+        window.location.href = "./"
     }
 }
 
@@ -781,7 +819,7 @@ async function turmaInfos(idTurma) {
 
             const h3 = document.createElement("h3")
             h3.textContent = data["alunos"][i]["nome"]
-            h3.onclick = () => {window.location.href = `/perfil.html?id=${i}`}
+            h3.onclick = () => {window.location.href = `./perfil.html?id=${i}`}
             const p = document.createElement("p")
             p.textContent = `${data["alunos"][i]["pontos"]} pts`
 
@@ -789,6 +827,9 @@ async function turmaInfos(idTurma) {
             div.appendChild(p)
             locate.appendChild(div)
         }
+    } else if(response.status == 404) {
+        window.location.href = "./"
+        alert("Turma não encontrada")
     }
 }
 
@@ -822,7 +863,7 @@ async function criarDesafio(idTurma) {
     const data = await response.json()
     if(response.status == 200) {
         return true
-    } else if(response.status == 401 && data["detail"] == "Não autorizado") {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             criarDesafio(idTurma)
@@ -855,10 +896,13 @@ async function listarUserDesafios() {
     if(response.status == 200) {
         console.log(data)
         return data
-    } else if(response.status == 401 && data["detail"] == "Não autorizado") {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             listarUserDesafios()
+        } else {
+            window.location.href = "./"
+            alert("Não autorizado")
         }
     }
 }
@@ -955,7 +999,7 @@ async function getDesafiosDiarios (idTurma) {
         function showResults() {
             const locate = document.querySelector(".resultsTableContent")
             const proxBtt = document.getElementById("encerrarBtt")
-            proxBtt.onclick = () => {window.location.href = `/turma.html?id=${idTurma}`}
+            proxBtt.onclick = () => {window.location.href = `./turma.html?id=${idTurma}`}
 
             document.getElementById("desafioInterface").style.display = "none"
             document.getElementById("resultsTable").style.display = "block"
@@ -1006,16 +1050,16 @@ async function getDesafiosDiarios (idTurma) {
                 completarDesafio(i, results[i])
             }
         }
-    } else if(response.status == 401) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
-            getDesafiosDiarios
+            getDesafiosDiarios(idTurma)
         } else {
-            window.location.href = "/"
+            window.location.href = "./"
             alert("Você não tem acesso este conteudo")
         }
     } else if(response.status == 404) {
-        window.location.href = `/turma.html?id=${idTurma}`
+        window.location.href = `./turma.html?id=${idTurma}`
         alert("Não há desafios nesta turma")
     }
 }
@@ -1036,10 +1080,13 @@ async function completarDesafio(idDesafio, condition) {
     const data = await response.json()
     if(response.status == 200) {
         console.log(data)
-    } else if(response.status == 401) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             completarDesafio(idDesafio, condition)
+        } else {
+            window.location.href = "./"
+            alert("Não autorizado")
         }
     }
 }

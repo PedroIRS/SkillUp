@@ -88,9 +88,12 @@
             if(!idUser) {
                 const verify = await verificar()
                 if(verify) {
-                    window.location.href = `/perfil.html?id=${verify["id"]}`
+                    const url = new URL(window.location)
+                    url.searchParams.set("id", verify.id)
+                    window.history.pushState({}, '', url)
+                    window.location.reload()
                 } else {
-                    window.location.href = "/"
+                    window.location.href = "./"
                     alert("Faça login para acessar este conteúdo")
                 }
             }
