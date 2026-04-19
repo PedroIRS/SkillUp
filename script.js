@@ -43,7 +43,7 @@ async function verificar() {
 }
 
 async function refreshToken() {
-    const response = await fetch('http://127.0.0.1:8000/auth/refresh', {
+    const response = await fetch('https://skillup-api-qxon.onrender.com/auth/refresh', {
     method: 'GET',
     credentials:"include",
     headers: {
@@ -60,7 +60,7 @@ async function refreshToken() {
 }
 
 async function login(email=document.getElementById("loginEmailInput").value, senha=document.getElementById("loginSenhaInput").value) {
-    const response = await fetch("http://127.0.0.1:8000/auth/login", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/login", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -111,7 +111,7 @@ function validarInfos() {
 
 
 async function signin(nome, email, senha, isProfessor) {
-    const response = await fetch("http://127.0.0.1:8000/auth/signin", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/signin", {
         method: "POST",
         headers: {
         "Content-Type": "application/json"
@@ -137,7 +137,7 @@ async function signin(nome, email, senha, isProfessor) {
 
 
 async function getInfos(idUser) {
-    const response = await fetch(`http://127.0.0.1:8000/profile/getinfo/${idUser}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getinfo/${idUser}`, {
         method: 'GET',
         credentials: "include",
         headers: {
@@ -170,7 +170,7 @@ async function editarPerfil() {
     const desc = document.getElementById("editarDesc").value;
 
     if(desc.length <= 150) {
-        const response = await fetch("http://127.0.0.1:8000/profile/editarPerfil", {
+        const response = await fetch("https://skillup-api-qxon.onrender.com/profile/editarPerfil", {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -204,7 +204,7 @@ async function editarPerfil() {
 }
 
 async function atualizarRanking() {
-    const response = await fetch("http://127.0.0.1:8000/profile/atualizarRanking", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/profile/atualizarRanking", {
         method: "POST",
         headers: {
             'Content-Type': 'application/json'
@@ -216,7 +216,7 @@ async function atualizarRanking() {
 }
 
 async function getUserConquistas(idUser) {
-    const response = await fetch(`http://127.0.0.1:8000/profile/getUserConquistas/${idUser}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getUserConquistas/${idUser}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -228,7 +228,7 @@ async function getUserConquistas(idUser) {
 }
 
 async function atualizarConquistas(idUser) {
-    const response = await fetch(`http://127.0.0.1:8000/profile/atualizarConquistas/${idUser}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/atualizarConquistas/${idUser}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -238,7 +238,7 @@ async function atualizarConquistas(idUser) {
 }
 
 async function conquistas() {
-    const response = await fetch("http://127.0.0.1:8000/profile/conquistas", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/profile/conquistas", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -279,7 +279,7 @@ async function conquistasList(idUser) {
 }
 
 async function getRanking() {
-    const response = await fetch("http://127.0.0.1:8000/profile/getRanking", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/profile/getRanking", {
         method: "GET",
         headers: {
             'Content-Type': 'application/json'
@@ -300,7 +300,7 @@ async function organizarRanking(espaco, type, query="") {
         document.getElementById("numParticipantes").textContent = Object.keys(rank).length
         const verify = await verificar()
         if (verify) {
-            const response = await fetch(`http://127.0.0.1:8000/profile/getinfo/${verify["id"]}`, {
+            const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getinfo/${verify["id"]}`, {
             method: 'GET',
             credentials: "include",
             headers: {
@@ -447,7 +447,7 @@ async function editarSenha() {
     const confirmNovaSenha = document.getElementById("confirmNovaSenha").value;
 
     if(novaSenha == confirmNovaSenha) {
-        const response = await fetch("http://127.0.0.1:8000/auth/editarSenha", {
+        const response = await fetch("https://skillup-api-qxon.onrender.com/auth/editarSenha", {
             method: "PATCH",
             credentials: "include",
             headers: {
@@ -483,7 +483,7 @@ async function editarSenha() {
 async function editarNome() {
     const novoNome = document.getElementById("infosNome").value;
 
-    const response = await fetch("http://127.0.0.1:8000/auth/editarNome", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/editarNome", {
         method: "PATCH",
         credentials: "include",
         headers: {
@@ -509,7 +509,7 @@ async function editarNome() {
 
 
 async function logout() {
-    const response = await fetch("http://127.0.0.1:8000/auth/logout", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/logout", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -531,7 +531,7 @@ async function logout() {
 
 
 async function deletarConta() {
-    const response = await fetch("http://127.0.0.1:8000/auth/deletarConta", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/deletarConta", {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -580,7 +580,7 @@ async function validarTurmaInfos() {
 
 
 async function criarTurma(nome, senha, desc) {
-    const response = await fetch("http://127.0.0.1:8000/turmas/criar", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/turmas/criar", {
         method: "POST",
         credentials: "include",
         headers: {
@@ -614,7 +614,7 @@ async function criarTurma(nome, senha, desc) {
 async function listarTurmas(espaco, type, query="") {
     const locate = document.getElementById(espaco)
 
-    const response = await fetch("http://127.0.0.1:8000/turmas/listarTurmas", {
+    const response = await fetch("https://skillup-api-qxon.onrender.com/turmas/listarTurmas", {
         method: "GET",
         credentials: "include",
         headers: {
@@ -697,7 +697,7 @@ async function listarTurmas(espaco, type, query="") {
 
 
 async function entrarTurma(idTurma, senha) {
-    const response = await fetch(`http://127.0.0.1:8000/turmas/entrar/${idTurma}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/entrar/${idTurma}`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -718,7 +718,7 @@ async function entrarTurma(idTurma, senha) {
 
 
 async function sairTurma(idTurma) {
-    const response = await fetch(`http://127.0.0.1:8000/turmas/sair/${idTurma}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/sair/${idTurma}`, {
         method: "DELETE",
         credentials: "include",
         headers: {
@@ -735,7 +735,7 @@ async function sairTurma(idTurma) {
 
 
 async function turmaInfos(idTurma) {
-    const response = await fetch(`http://127.0.0.1:8000/turmas/turmaInfos/${idTurma}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/turmaInfos/${idTurma}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -804,7 +804,7 @@ async function criarDesafio(idTurma) {
     const itemCorreto = document.getElementById("itemCorretoInput").value
     const dataDesafio = document.getElementById("dataInput").value
 
-    const response = await fetch(`http://127.0.0.1:8000/desafios/criar`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/criar`, {
         method: "POST",
         credentials: "include",
         headers: {
@@ -846,7 +846,7 @@ async function criarDesafio(idTurma) {
 
 
 async function listarUserDesafios() {
-    const response = await fetch(`http://127.0.0.1:8000/desafios/listar`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/listar`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -867,7 +867,7 @@ async function listarUserDesafios() {
 
 
 async function getDesafiosDiarios (idTurma) {
-    const response = await fetch(`http://127.0.0.1:8000/desafios/desafiosDiarios/${idTurma}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/desafiosDiarios/${idTurma}`, {
         method: "GET",
         credentials: "include",
         headers: {
@@ -1024,7 +1024,7 @@ async function getDesafiosDiarios (idTurma) {
 
 
 async function completarDesafio(idDesafio, condition) {
-    const response = await fetch(`http://127.0.0.1:8000/desafios/completar`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/completar`, {
         method: "POST",
         credentials: "include",
         headers: {
