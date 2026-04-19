@@ -62,6 +62,7 @@ async function refreshToken() {
 async function login(email=document.getElementById("loginEmailInput").value, senha=document.getElementById("loginSenhaInput").value) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/login", {
         method: "POST",
+        credentials: "include",
         headers: {
         "Content-Type": "application/json"
         },
@@ -112,6 +113,7 @@ function validarInfos() {
 async function signin(nome, email, senha, isProfessor) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/signin", {
         method: "POST",
+        credentials: "include",
         headers: {
         "Content-Type": "application/json"
         },
