@@ -515,7 +515,7 @@ async function logout() {
     const data = await response.json()
 
     if(response.status == 200) {
-        window.location.href = "/"
+        window.location.href = "./"
         console.log(data, response.status)
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
@@ -842,6 +842,7 @@ async function criarDesafio(idTurma) {
     const item4 = document.getElementById("item4Input").value
     const itemCorreto = document.getElementById("itemCorretoInput").value
     const dataDesafio = document.getElementById("dataInput").value
+    console.log(dataDesafio)
 
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/criar`, {
         method: "POST",
