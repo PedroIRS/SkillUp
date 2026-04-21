@@ -10,7 +10,8 @@
 <body>
     <nav>
         <a href="./" style="color: #18E0B5; font-size: 1.5rem;"><strong>SkillUp</strong></a>
-        <div>
+        <h6 onclick="showNav()">--</h6>
+        <div class="navLinks">
             <a href="./perfil.html" id="perfilLink" style="display: none;">Perfil</a>
             <a href="./login.html" id="loginLink">Login</a>
             <a href="./ranking.html">Ranking</a>
@@ -34,7 +35,7 @@
 
                 <div class="turmaDesafiosProf">
                     <h4>Criar um novo desafio para esta turma</h4>
-                    <button onclick="criarTurmaInterface()">Criar</button>
+                    <button onclick="criarDesafioInterface()">Criar</button>
                 </div>
             </div>
             
@@ -73,7 +74,7 @@
         <section class="criarDesafioInterface">
             <div style="display: flex; flex-flow: row;">
                 <h3>Crie novos desafios</h3>
-                <h6 onclick="criarTurmaInterface()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
+                <h6 onclick="criarDesafioInterface()" style="margin: 0 0 auto auto; background-color: transparent; border: none; color: #C7D1D6; font-size: 1rem; cursor: pointer;">X</h6>
             </div>
             <div class="inputBox">
                 <input type="text" placeholder="Pergunta" id="perguntaInput">
@@ -147,7 +148,7 @@
                 if(["1", "2", "3", "4"].includes(respostaItem)) {
                     const resp = await criarDesafio(idTurma)
                     if(resp) {
-                        criarTurmaInterface()
+                        criarDesafioInterface()
                     }
                 } else {
                     const men = document.getElementById("menssagemErroDesafio")
@@ -178,26 +179,32 @@
         function confirmarSaida() {
             const confirm = document.querySelector(".confirmarSairTurma")
             const fog = document.querySelector(".grayFog")
+            const body = document.querySelector("body")
 
             if(confirm.style.display == "none") {
                 confirm.style.display = "flex"
                 fog.style.display = "block"
+                body.style.overflow = "hidden"
             } else {
                 confirm.style.display = "none"
                 fog.style.display = "none"
+                body.style.overflow = "auto"
             }
         }
 
-        function criarTurmaInterface() {
+        function criarDesafioInterface() {
             const interface = document.querySelector(".criarDesafioInterface")
             const fog = document.querySelector(".grayFog")
+            const body = document.querySelector("body")
 
             if(interface.style.display == "none") {
                 interface.style.display = "flex"
                 fog.style.display = "block"
+                body.style.overflow = "hidden"
             } else {
                 interface.style.display = "none"
                 fog.style.display = "none"
+                body.style.overflow = "auto"
             }
         }
     </script>

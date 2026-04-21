@@ -26,6 +26,7 @@ h1, h2, h3, h4, h5, h6 {
 nav {
     position: sticky;
     display: flex;
+    width: 100%;
     background-color: #0B1F2A;
     height: 3rem;
     justify-content: space-between;
@@ -33,6 +34,10 @@ nav {
     border-bottom: 0.12rem solid #35576b;
     flex-flow: row wrap;
     cursor: default;
+}
+
+nav h6 {
+    display: none;
 }
 
 nav a {
@@ -85,7 +90,7 @@ nav a:hover {
 
 
 
-main {
+.indexMain {
     display: flex;
     flex-flow: row wrap;
     margin-top: 2rem;
@@ -217,6 +222,10 @@ main {
     margin: 0.4rem 0;
 }
 
+.userTurmasHeader div {
+    width: 96%;
+}
+
 .userTurmasContent {
     margin: 0.4rem;
     width: 97%;
@@ -315,14 +324,18 @@ main {
     margin: 0.4rem 0 0 0;
 }
 
+.entrarTurmaInterfaceHeader div {
+    width: 96%;
+}
+
 .entrarTurmaInterface input{
     width: 96%;
     margin-top: 0;
 }
 
 .entrarTurmaInterfaceContent {
-    margin: 0.4rem;
-    width: 97%;
+    margin: 0.4rem 0;
+    width: 100%;
     max-height: 21rem;
     overflow-y: auto;
     scrollbar-gutter: stable;
@@ -353,10 +366,10 @@ main {
     background-color: #0E2A36;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
-    width: 95%;
+    width: 96%;
     height: 2.5rem;
     padding: 0.5rem;
-    margin: 0.4rem 0.2rem;
+    margin: 0.4rem 0;
     cursor: pointer;
 }
 
@@ -385,7 +398,7 @@ main {
     flex-flow: column wrap;
     padding: 1rem;
     width: 40%;
-    height: 30rem;
+    height: auto;
     box-shadow: 0 0 0.2rem #35576b;
     z-index: 20;
 }
@@ -415,12 +428,17 @@ main {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: center;
-    margin: 0.4rem 0;
+    margin: 0.4rem 0 0 0;
+    width: 100%;
+}
+
+.professorTurmasHeader div {
+    width: 86%;
 }
 
 .professorTurmasContent {
-    margin: 0.4rem;
-    width: 97%;
+    margin: 0.4rem 0    ;
+    width: 100%;
     max-height: 23rem;
     overflow-y: auto;
     scrollbar-gutter: stable;
@@ -450,10 +468,10 @@ main {
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
     align-content: center;
-    width: 95%;
+    width: 96%;
     height: 2.5rem;
     padding: 0.5rem;
-    margin: 0.4rem 0.2rem;
+    margin: 0.4rem 0;
     cursor: pointer;
 }
 
@@ -488,12 +506,19 @@ main {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    align-items: center;
     margin: 0.4rem 0 0 0;
+}
+
+.criarTurmaInterfaceHeader div {
+    width: 96%;
 }
 
 .criarTurmaInterfaceContent {
     text-align: center;
+}
+
+.criarTurmaInterfaceContent .inputBox {
+    margin-top: 0;
 }
 
 .criarTurmaInterfaceContent input {
@@ -576,6 +601,14 @@ main {
     justify-items: center;
 }
 
+.loginPanelContent .inputBox {
+    width: 100%;
+}
+
+.loginPanelContent input {
+    width: 70%;
+}
+
 .loginPanel button {
     background-color: #18E0B5;
     font-size: 1rem;
@@ -586,13 +619,17 @@ main {
     cursor: pointer;
     padding: 0.5rem 1rem;
     margin: 1rem 0 1.5rem 0;
-    width: 9rem;
+    width: 50%;
     height: 1.8rem;
 }
 
 .loginPanel button:hover {
     background-color: #10CFA6;
     box-shadow: 0 0 0.2rem #3EF2C9;
+}
+
+.changePath {
+    margin-top: 0.4rem;
 }
 
 .changePath a {
@@ -627,7 +664,7 @@ main {
     flex-flow: row wrap;
     justify-content: space-between;
     align-items: stretch;
-    padding: 1rem ;
+    padding: 1rem;
     margin: 0.8rem;
     width: 66%;
     background-color: #0B1F2A;
@@ -641,7 +678,7 @@ main {
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
     padding: 1.5rem 0;
-    width: 15%;
+    min-width: 15%;
     height: 4.4rem;
 }
 
@@ -768,7 +805,7 @@ main {
     display: flex;
     flex-flow: row nowrap;
     justify-content: space-between;
-    gap: 1.7%;
+    gap: 3%;
     margin-top: 1rem;
     width: 100%;
     overflow-x: auto;
@@ -882,8 +919,8 @@ main {
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
     padding: 1rem 0;
-    min-width: 32.3%;
-    min-height: 3rem;
+    width: 32.3%;
+    height: 3rem;
 }
 
 
@@ -896,7 +933,13 @@ main {
     padding: 0.5rem 1rem;
 }
 
-.barraPesquisaRanking input {
+.barraPesquisaRanking .inputBox {
+    height: auto;
+    margin: 0.5rem 0;
+}
+
+.barraPesquisaRanking .inputBox input {
+    padding: 0.4rem;
     width: 97%;
 }
 
@@ -1103,6 +1146,7 @@ main {
 .novaSenhaContent {
     display: flex;
     flex-flow: row wrap;
+    justify-content: space-between;
     margin: 0.5rem 0;
     width: 99%;
 }
@@ -1216,6 +1260,7 @@ main {
     width: 40%;
     height: auto;
     box-shadow: 0 0 0.2rem #35576b;
+    z-index: 20;
 }
 
 .confirmarSairConta h3 {
@@ -1254,6 +1299,7 @@ main {
     width: 40%;
     height: auto;
     box-shadow: 0 0 0.2rem #35576b;
+    z-index: 20;
 }
 
 .confirmarExcluirConta div {
@@ -1500,7 +1546,7 @@ main {
     border-radius: 0.8rem;
     margin: 0.8rem 0;
     padding: 0.6rem;
-    width: 94%;
+    width: 96%;
     height: auto;
 }
 
@@ -1619,8 +1665,7 @@ main {
     background-color: #0B1F2A;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
-    position: absolute;
-    left: 25%;
+    margin: 0 auto;
     width: 50%;
     height: auto;
     padding: 0.8rem;
@@ -1674,17 +1719,17 @@ main {
     background-color: #0B1F2A;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
-    position: absolute;
     display: none;
-    left: 25%;
     width: 50%;
     height: auto;
     padding: 0.8rem;
+    margin: 0 auto;
 }
 
 .resultsTableContent {
     padding: 0.4rem 0.2rem;
     height: 25rem;
+    width: 100%;
     overflow: auto;
     scrollbar-gutter: stable;
 }
@@ -1716,8 +1761,8 @@ main {
     background-color: #0E2A36;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
-    margin: 0.8rem 0;
-    padding: 0.6rem;
+    margin: 0.4rem 0;
+    padding: 0.5rem;
     width: 95%;
     height: auto;
 }
@@ -1743,4 +1788,313 @@ main {
   100% {
     transform: translateY(0);
   }
+}
+
+
+
+/* Responsividade */
+
+
+
+@media (max-width: 767px) {
+    nav {
+        flex-flow: column wrap;
+        height: auto;
+        padding: 0.3rem;
+        justify-content: center;
+    }
+
+    nav h6 {
+        display: block;
+    }
+
+    .navLinks {
+        display: none;
+        flex-flow: column;
+        align-items: center;
+        background-color: #0E2A36;
+        width: 100%;
+    }
+
+
+    .indexMain {
+        display: flex;
+        flex-flow: column-reverse wrap;
+        align-items: center;
+        padding: 0;
+        margin: 0;
+    }
+
+    .mainContent{
+        position: relative;
+        padding: 0;
+        height: auto;
+        width: 100%;
+        left: 0;
+        margin-top: 5rem;
+    }
+
+    .mainContent button {
+        height: 3rem;
+        width: 70%;
+    }
+
+    .rankingIndex {
+        padding: 0;
+        width: 100%;
+        margin: 5rem 0 0 0;
+    }
+
+    .rankingIndexTabel {
+        width: 92%;
+    }
+
+    .userTurmas {
+        position: relative;
+        width: 87%;
+        top: auto;
+        left: auto;
+        margin: auto;
+    }
+
+    .userTurmas button {
+        height: 2.5rem;
+        width: 70%;
+        font-size: 0.9rem;
+    }
+
+    .entrarTurmaInterface {
+        position: relative;
+        width: 87%;
+        margin: auto;
+        top: auto;
+        left: auto;
+    }
+
+    .professorTurmas {
+        position: relative;
+        top: auto;
+        left: auto;
+        width: 87%;
+        margin: auto;
+    }
+
+    .professorTurmas button {
+        height: 2.5rem;
+        width: 70%;
+        font-size: 0.9rem;
+    }
+
+    .criarTurmaInterface {
+        position: relative;
+        width: 87%;
+        left: auto;
+        top: auto;
+        margin: auto;
+    }
+
+    .criarTurmaInterface button {
+        height: 2.5rem;
+        width: 70%;
+        font-size: 0.9rem;
+    }
+
+    .loginPanel {
+        width: 80%;
+        margin: 0;
+        margin-top: 20%;
+    }
+
+    .perfilMain {
+        margin: 0.5rem 0;
+        align-items: center;
+    }
+
+    .perfilMain section {
+        width: 87%;
+        margin: 0.8rem 0;
+    }
+
+    .status {
+        gap: 3%;
+        flex-wrap: nowrap;
+        overflow-x: auto;
+        padding-bottom: 0.8rem;
+        scrollbar-gutter: stable;
+    }
+
+    .status::-webkit-scrollbar {
+        height: 0.4rem;
+        padding-top: 0.5rem;
+    }
+
+    .status::-webkit-scrollbar-track {
+        background: #0B1F2A;
+    }
+
+    .status::-webkit-scrollbar-thumb {
+        background: #18E0B5;
+        border-radius: 0.8rem;
+    }
+
+    .status::-webkit-scrollbar-thumb:hover {
+        background: #10CFA6;
+        cursor: pointer;
+    }
+
+    .status div {
+        min-width: 30%;
+    }
+
+    .rankingMain {
+        margin: 0.5rem 0;
+        align-items: center;
+    }
+
+    .rankingMain section {
+        width: 87%;
+        margin: 0.4rem 0;
+    }
+
+    .barraPesquisaRanking .inputBox {
+        height: auto;
+    }
+
+    .rankingInfos {
+        margin: 0.4rem 0;
+        width: 100%;
+        justify-self: center;
+    }
+
+    .rankingInfo {
+        padding: 0.3rem;
+        width: auto;
+        height: auto;
+    }
+
+    .configMain {
+        margin: 0;
+        align-items: center;
+    }
+
+    .configHeader {
+        width: 94%;
+    }
+    
+    .configNav {
+        width: 94%;
+    }
+    
+    .configContaOn, .configContaOff {
+        width: 94%;
+        align-items: center;
+    }
+
+    .configContaOn section {
+        width: 94%;
+    }
+
+    .configContaOff div {
+        width: 94%;
+    }
+
+    .configContaOff button {
+        width: 50%;
+    }
+    
+    .infosPessoaisContent div input, .infosPessoaisContent form input{
+        width: 95%;
+    }
+
+    .segurancaContent div input {
+        width: 95%;
+    }
+
+    .novaSenhaContent {
+        width: 97%;
+        justify-content: space-between;
+    }
+
+    .novaSenhaContent .inputBox {
+        margin: 0;
+        width: 47%;
+    }
+
+    .seguranca button {
+        width: 50%;
+        font-size: 0.9rem;
+    }
+
+    .confirmarSairConta {
+        width: 87%;
+        left: auto;
+        top: 40%;
+        margin: auto;
+    }
+
+    .confirmarExcluirConta {
+        width: 87%;
+        left: auto;
+        top: 40%;
+        margin: auto;
+    }
+
+    .turmaMain {
+        flex-flow: column wrap;
+        margin: 1rem 0;
+        align-items: center;
+        gap: 1rem;
+    }
+
+    .leftSide {
+        width: 95%;
+        align-items: center;
+    }
+
+    .rightSide {
+        width: 95%;
+        align-items: center;
+    }
+
+    .leftSide div {
+        width: 92.34%;
+    }
+
+    .rightSide div {
+        width: 95%;
+    }
+
+    #turmaSenha {
+        width: 100%;
+    }
+
+    #turmaSenha input {
+        width: 100%;
+    }
+
+    .confirmarSairTurma {
+        width: 87%;
+        left: auto;
+        top: 34%;
+    }
+
+    .criarDesafioInterface {
+        width: 87%;
+        left: auto;
+        top: 23%;
+    }
+
+    .playMain {
+        margin: 1rem auto;
+    }
+
+    .desafioInterface {
+        margin-top: 5rem;
+        width: 90%;
+    }
+
+    .resultsTable {
+        margin-top: 5rem;
+        width: 90%;
+    }
 }

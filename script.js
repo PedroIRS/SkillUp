@@ -20,6 +20,17 @@ async function upNav() {
     }
 }
 
+function showNav() {
+    const navLinks = document.querySelector(".navLinks")
+
+    if (navLinks.style.display === "none") {
+        navLinks.style.display = "flex"
+    } else {
+        navLinks.style.display = "none"
+    }
+}
+
+
 async function verificar() {
     const response = await fetch('https://skillup-api-qxon.onrender.com/auth/me', {
     method: 'GET',
