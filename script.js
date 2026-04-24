@@ -603,7 +603,6 @@ async function criarTurma(nome, senha, desc) {
     console.log(data["detail"])
 
     if(response.status == 200) {
-        console.log(data)
         const criarTurma = document.querySelector(".criarTurmaInterface")
         const professorTurmas = document.querySelector(".professorTurmas")
 
@@ -853,7 +852,12 @@ async function criarDesafio(idTurma) {
     const item4 = document.getElementById("item4Input").value
     const itemCorreto = document.getElementById("itemCorretoInput").value
     const dataDesafio = document.getElementById("dataInput").value
-    console.log(dataDesafio)
+
+    const date = new Date();
+    const ano = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const dia = String(date.getDate()).padStart(2, '0');
+    const hoje = `${ano}-${mes}-${dia}`;
 
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/criar`, {
         method: "POST",
@@ -863,6 +867,7 @@ async function criarDesafio(idTurma) {
         },
         body: JSON.stringify({
             idTurma: idTurma,
+            dataCriacao: hoje,
             pergunta: pergunta,
             data: dataDesafio,
             item1: item1,
@@ -874,6 +879,10 @@ async function criarDesafio(idTurma) {
     })
     const data = await response.json()
     if(response.status == 200) {
+        const menssagemCriarDesafios = document.getElementById("menssagemCriarDesafios")
+        menssagemCriarDesafios.style.display = "block"
+        menssagemCriarDesafios.textContent = "Desafio criado com sucesso"
+        setTimeout(() => {menssagemCriarDesafios.style.display = "none"}, 3000)
         return true
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
@@ -884,14 +893,18 @@ async function criarDesafio(idTurma) {
             men.textContent = "Você não tem permissão para realizar esta ação"
             men.style.display = "block"
         }
-    } else if(response.status == 401 && data["detail"] == "Data invalida") {
+    } else if(response.status == 400 && data["detail"] == "Data invalida") {
         const men = document.getElementById("menssagemErroDesafio")
-            men.textContent = "Data inválida"
-            men.style.display = "block"
+        men.textContent = "Data inválida"
+        men.style.display = "block"
     } else if(response.status == 404) {
         const men = document.getElementById("menssagemErroDesafio")
-            men.textContent = "Turma não encontrada"
-            men.style.display = "block"
+        men.textContent = "Turma não encontrada"
+        men.style.display = "block"
+    } else if(response.status == 400 && data["detail"] == "Pergunta já registrada nesta turma") {
+        const men = document.getElementById("menssagemErroDesafio")
+        men.textContent = "Pergunta já registrada nesta turma"
+        men.style.display = "block"
     }
 }
 
