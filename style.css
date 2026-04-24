@@ -25,6 +25,7 @@ h1, h2, h3, h4, h5, h6 {
 
 nav {
     position: sticky;
+    top: 0;
     display: flex;
     width: 100%;
     background-color: #0B1F2A;
@@ -84,6 +85,33 @@ nav a:hover {
     position: fixed;
     top: 0;
 }
+
+.toastNotificationContent {
+    width: 36%;
+    display: flex;
+    flex-flow: column-reverse;
+    max-height: 15rem;
+    position: fixed;
+    bottom: 0.5rem;
+    right: 4.5rem;
+}
+
+.toastNotification {
+    width: 100%;
+    height: auto;
+    background-color: #35576b;
+    border-left: solid 1.5rem red;
+    border-radius: 0.8rem;
+    padding: 0.5rem 1rem;
+    margin: 0.5rem 0;
+    opacity: 0;
+    transform: translateX(5rem);
+}
+
+.spawn {
+    animation: spawn 0.5s ease forwards;
+}
+
 
 
 /* Index */
@@ -1788,6 +1816,13 @@ nav a:hover {
   100% {
     transform: translateY(0);
   }
+}
+
+@keyframes spawn {
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
 }
 
 

@@ -1,8 +1,4 @@
-window.onload = main();
-
-function main() {
-    upNav();
-}
+upNav()
 
 async function upNav() {
     const verify = await verificar()
@@ -27,6 +23,30 @@ function showNav() {
         navLinks.style.display = "flex"
     } else {
         navLinks.style.display = "none"
+    }
+}
+
+
+function criarNotification(type, men) {
+    const location = document.querySelector(".toastNotificationContent")
+
+    const div = document.createElement("div")
+    
+    div.classList.add("toastNotification", "spawn")
+    div.innerHTML = `
+        <h3>${type}</h3>
+        <p>${men}</p>
+    `
+
+    location.appendChild(div)
+    setTimeout(() => {div.remove()}, 5000)
+    
+    if(type == "Sucesso") {
+        div.style.borderColor = "#18E0B5"
+        div.querySelector("h3").style.color = "#18E0B5"
+    } else if(type == "Erro") {
+        div.style.borderColor = "#FF4D4D"
+        div.querySelector("h3").style.color = "#FF4D4D"
     }
 }
 
@@ -879,10 +899,7 @@ async function criarDesafio(idTurma) {
     })
     const data = await response.json()
     if(response.status == 200) {
-        const menssagemCriarDesafios = document.getElementById("menssagemCriarDesafios")
-        menssagemCriarDesafios.style.display = "block"
-        menssagemCriarDesafios.textContent = "Desafio criado com sucesso"
-        setTimeout(() => {menssagemCriarDesafios.style.display = "none"}, 3000)
+        criarNotification("Sucesso", "Desafio criado com secesso")
         return true
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
@@ -903,6 +920,7 @@ async function criarDesafio(idTurma) {
         men.style.display = "block"
     } else if(response.status == 400 && data["detail"] == "Pergunta já registrada nesta turma") {
         const men = document.getElementById("menssagemErroDesafio")
+        criarNotification("Erro", "Pergunta já registrada nesta turma")
         men.textContent = "Pergunta já registrada nesta turma"
         men.style.display = "block"
     }
