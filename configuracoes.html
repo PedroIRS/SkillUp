@@ -42,10 +42,10 @@
                     <p>Atualize seus dados pessoais</p>
                 </div>
                 <div class="infosPessoaisContent">
-                    <form class="inputBox" onsubmit="editarNome()">
+                    <div class="inputBox">
                         <h4>Nome de Usuário</h4>
                         <input placeholder="Nome de Usuário" type="text" id="infosNome">
-                    </form>
+                    </div>
                     <div class="inputBox">
                         <h4>E-mail</h4>
                         <input placeholder="E-mail" type="text" id="infosEmail">
@@ -136,6 +136,14 @@
                 document.getElementById("infosNome").value = user["nome"]
                 document.getElementById("infosEmail").value = user["email"]
             }
+
+            const infosNome = document.getElementById("infosNome")
+            infosNome.addEventListener("keydown", (e) => {
+                if(e.key == "Enter") {
+                    console.log("suceso")
+                    editarNome()
+                }
+            })
         }
 
         function alertaSairConta() {

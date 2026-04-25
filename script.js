@@ -27,6 +27,14 @@ function showNav() {
     }
 }
 
+function dataHoje() {
+    const date = new Date();
+    const ano = date.getFullYear();
+    const mes = String(date.getMonth() + 1).padStart(2, '0');
+    const dia = String(date.getDate()).padStart(2, '0');
+    const hoje = `${ano}-${mes}-${dia}`;
+    return hoje
+}
 
 function criarNotification(type, men) {
     const location = document.querySelector(".toastNotificationContent")
@@ -68,23 +76,30 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("notificacoes", JSON.stringify(noticacoes))
 })
 
+function criarNotificationToOtherPage(type, men) {
+    const noticacoes = JSON.parse(localStorage.getItem("notificacoes")) || {"Sucesso": [], "Erro": [], "Informação": [], "Aviso": []}
+    noticacoes[type].push(men)
+    localStorage.setItem("notificacoes", JSON.stringify(noticacoes))
+}
+
 
 async function verificar() {
     const response = await fetch('https://skillup-api-qxon.onrender.com/auth/me', {
     method: 'GET',
     headers: {
         'Content-Type': 'application/json',
-        "Authorization": `Bearer ${localStorage.getItem("access-token")}`
+        "Authorization": `Bearer ${localStorage.getItem("access-token") || ""}`
     }
     })
-    const data = await response.json();
-    
+    const data = await response.json();    
     if (response.status == 200) {
         return data
     } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken();
-        if(refresh) {
+        if(refresh == true) {
             return verificar()
+        } else {
+            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
@@ -99,10 +114,11 @@ async function refreshToken() {
     })
 
     const data = await response.json();
-    if(response.status == 401) {
-        return false;
-    } else {
+    if(response.status == 200) {
+        localStorage.setItem("access-token", data)
         return true;
+    } else {
+        return false;
     }
 }
 
@@ -123,9 +139,7 @@ async function login(email=document.getElementById("loginEmailInput").value, sen
         localStorage.setItem("refresh-token", data["refresh-token"])
         localStorage.setItem("access-token", data["access-token"])
         window.location.href = "./";
-        const noticacoes = JSON.parse(localStorage.getItem("notificacoes")) || {"Sucesso": [], "Erro": [], "Informação": [], "Aviso": []}
-        noticacoes["Sucesso"].push("Login feito com sucesso")
-        localStorage.setItem("notificacoes", JSON.stringify(noticacoes))
+        criarNotificationToOtherPage("Sucesso", "Login feito com sucesso")
     } else if (response.status == 400 || response.status == 404) {
         document.getElementById("mensagemErro").style.display = "block";
     }
@@ -176,7 +190,6 @@ async function signin(nome, email, senha, isProfessor) {
 
     const data = await response.json();
     if(response.status == 200) {
-        console.log(data)
         login(email, senha)
     }
     if(response.status == 400) {
@@ -209,8 +222,8 @@ async function getInfos(idUser) {
         document.getElementById("progressoXp").textContent = `${data["xp"]} / ${Math.floor(100 * (1.5 ** data["nivel"]))} xp`
         document.getElementById("xpAtual").style.width = `${(data["xp"] * 100) / (100 * (1.5 ** data["nivel"]))}%`
     } else {
-        alert("Usuário não encontrado")
         window.location.href = "./"
+        criarNotificationToOtherPage("Erro", "Usuário não encontrado")
     }
 }
 
@@ -245,10 +258,10 @@ async function editarPerfil() {
             const refresh = await refreshToken()
             if(refresh) {
                 editarPerfil()
+            } else {
+                criarNotification("Aviso", "Faça login para acessar este conteúdo")
             }
         }
-    } else {
-        alert("A descrição deve ter no  máximo 150 caracteres")
     }
 }
 
@@ -261,7 +274,6 @@ async function atualizarRanking() {
     })
 
     const data = await response.json()
-    console.log(data)
 }
 
 async function getUserConquistas(idUser) {
@@ -292,7 +304,6 @@ async function conquistas() {
         },
     })
     const data = await response.json()
-    console.log(data)
     return data
 }
 
@@ -340,7 +351,6 @@ async function getRanking() {
 async function organizarRanking(espaco, type, query="") {
     const rank = await getRanking()
     const rankingGeral = document.getElementById(espaco)
-    console.log(rank)
 
     if(type == "ranking") {
         document.getElementById("numParticipantes").textContent = Object.keys(rank).length
@@ -508,10 +518,16 @@ async function editarSenha() {
 
         if(response.status == 200) {
             document.getElementById("menssagemErro").style.display = "none"
+            document.getElementById("senhaAtual").value = ""
+            document.getElementById("novaSenha").value = ""
+            document.getElementById("confirmNovaSenha").value = ""
+            criarNotification("Sucesso", "Senha alterada com sucesso")
         } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
             const refresh = await refreshToken()
             if(refresh) {
                 editarSenha()
+            } else {
+                criarNotification("Aviso", "Faça login para acessar este conteúdo")
             }
         } else if(response.status == 401 && data["detail"] == "Senha incorreta") {
             document.getElementById("menssagemErro").style.display = "block"
@@ -540,14 +556,15 @@ async function editarNome() {
         })
     })
     const data = await response.json()
-    console.log(data)
 
     if(response.status == 200) {
-        window.location.reload()
+        criarNotification("Sucesso", "Nome de usuário alterado com sucesso")
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             editarNome()
+        } else {
+            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
@@ -557,6 +574,7 @@ function logout() {
     localStorage.removeItem("access-token")
     localStorage.removeItem("refresh-token")
     window.location.href = "./"
+    criarNotificationToOtherPage("Informação", "Faça login para realizar desafios diarios")
 }
 
 
@@ -577,7 +595,11 @@ async function deletarConta() {
         const refresh = await refreshToken()
         if(refresh) {
             deletarConta()
+        } else {
+            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
+    } else {
+        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }
 
@@ -642,10 +664,12 @@ async function criarTurma(nome, senha, desc) {
             criarTurma(nome, senha, desc)
         } else {
             window.location.href = "./"
-            alert("Não autorizado")
+            criarNotificationToOtherPage("Aviso", "Faça login para acessar este conteúdo")
         }
     } else if(response.status == 401 && data["detail"] == "Acesso restrito, apenas professores.") {
-        alert("Somente professores podem realizar esta ação")
+        criarNotification("Erro", "Somente professores podem realizar esta ação")
+    } else {
+        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }
 
@@ -661,7 +685,6 @@ async function listarTurmas(espaco, type, query="") {
         }
     })
     const data = await response.json()
-    console.log(data)
 
     if(response.status == 200) {
         if(type == "minhasTurmas") {
@@ -737,6 +760,8 @@ async function listarTurmas(espaco, type, query="") {
         const refresh = await refreshToken()
         if(refresh) {
             listarTurmas(espaco, type, query)
+        } else {
+            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
@@ -759,20 +784,24 @@ async function entrarTurma(idTurma, senha) {
     if(response.status == 200) {
         console.log(data)
         window.location.reload()
+        criarNotificationToOtherPage("Informação", "Complete desafios e evolua nesta turma")
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             entrarTurma(idTurma, senha)
         } else {
             window.location.href = "./"
-            alert("Não autorizado")
+            criarNotificationToOtherPage("Sucesso", "Você entrou nesta turma")
+            criarNotificationToOtherPage("Aviso", "Faça login para acessar este conteúdo")
         }
     } else if(response.status == 404) {
-        alert("Turma não encontrada")
+        criarNotification("Erro", "Turma não encontrada")
     } else if(response.status == 401 && data["detail"] == "Senha incorreta") {
         const mensagemErro = document.getElementById("mensagemErroTurmaSenha")
         mensagemErro.textContent = "senha incorreta"
         mensagemErro.style.display = "block"
+    } else {
+        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }
 
@@ -790,13 +819,14 @@ async function sairTurma(idTurma) {
     if(response.status == 200) {
         console.log("Sucesso")
         window.location.reload()
+        criarNotificationToOtherPage("Sucesso", "Você saiu desta turma")
     } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             sairTurma(idTurma)
         } else {
             window.location.href = "./"
-            alert("Não autorizado")
+            criarNotificationToOtherPage("Aviso", "Faça login para realizar esta ação")
         }
     } else if(response.status == 404) {
         window.location.href = "./"
@@ -812,7 +842,6 @@ async function turmaInfos(idTurma) {
         }
     })
     const data = await response.json()
-    console.log(data)
     if(response.status == 200) {
         const nome = document.getElementById("nomeTurma")
         const prof = document.getElementById("profTurma")
@@ -862,7 +891,7 @@ async function turmaInfos(idTurma) {
         }
     } else if(response.status == 404) {
         window.location.href = "./"
-        alert("Turma não encontrada")
+        criarNotification("Erro", "Turma não encontrada")
     }
 }
 
@@ -876,11 +905,7 @@ async function criarDesafio(idTurma) {
     const itemCorreto = document.getElementById("itemCorretoInput").value
     const dataDesafio = document.getElementById("dataInput").value
 
-    const date = new Date();
-    const ano = date.getFullYear();
-    const mes = String(date.getMonth() + 1).padStart(2, '0');
-    const dia = String(date.getDate()).padStart(2, '0');
-    const hoje = `${ano}-${mes}-${dia}`;
+    const hoje = dataHoje()
 
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/criar`, {
         method: "POST",
@@ -926,6 +951,8 @@ async function criarDesafio(idTurma) {
         criarNotification("Erro", "Pergunta já registrada nesta turma")
         men.textContent = "Pergunta já registrada nesta turma"
         men.style.display = "block"
+    } else {
+        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }
 
@@ -948,14 +975,14 @@ async function listarUserDesafios() {
             listarUserDesafios()
         } else {
             window.location.href = "./"
-            alert("Não autorizado")
+            criarNotificationToOtherPage("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
 
 
 async function getDesafiosDiarios (idTurma) {
-    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/desafiosDiarios/${idTurma}`, {
+    const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/desafiosDiarios/${idTurma}/${dataHoje()}`, {
         method: "GET",
         headers: {
             'content-type': 'application/json',
@@ -1102,11 +1129,11 @@ async function getDesafiosDiarios (idTurma) {
             getDesafiosDiarios(idTurma)
         } else {
             window.location.href = "./"
-            alert("Você não tem acesso este conteudo")
+            criarNotificationToOtherPage("Aviso", "Você não tem acesso este conteudo")
         }
     } else if(response.status == 404) {
         window.location.href = `./turma.html?id=${idTurma}`
-        alert("Não há desafios nesta turma")
+        criarNotificationToOtherPage("Informaçao", "Não há desafios nesta turma")
     }
 }
 
@@ -1132,7 +1159,9 @@ async function completarDesafio(idDesafio, condition) {
             completarDesafio(idDesafio, condition)
         } else {
             window.location.href = "./"
-            alert("Não autorizado")
+            acriarNotificationToOtherPage("Aviso", "Você não tem acesso este conteudo")
         }
+    } else {
+        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }

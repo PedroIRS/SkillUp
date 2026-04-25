@@ -255,8 +255,8 @@ nav a:hover {
 }
 
 .userTurmasContent {
-    margin: 0.4rem;
-    width: 97%;
+    margin: 0.4rem 0;
+    width: 100%;
     max-height: 22rem;
     overflow-y: auto;
     scrollbar-gutter: stable;
@@ -287,7 +287,7 @@ nav a:hover {
     background-color: #0E2A36;
     border: solid 0.1rem #35576b;
     border-radius: 0.8rem;
-    width: 95%;
+    width: 94%;
     height: 2.5rem;
     padding: 0.5rem;
     margin: 0.4rem 0.2rem;
@@ -2131,5 +2131,11 @@ nav a:hover {
     .resultsTable {
         margin-top: 5rem;
         width: 90%;
+    }
+
+    .toastNotificationContent {
+        width: 50%;
+        right: 5rem;
+        bottom: 1rem;
     }
 }
