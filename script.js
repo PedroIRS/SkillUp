@@ -1,5 +1,6 @@
 upNav()
 
+
 async function upNav() {
     const verify = await verificar()
     if(verify) {
@@ -47,16 +48,33 @@ function criarNotification(type, men) {
     } else if(type == "Erro") {
         div.style.borderColor = "#FF4D4D"
         div.querySelector("h3").style.color = "#FF4D4D"
+    } else if(type == "Informação") {
+        div.style.borderColor = "#33B3FF"
+        div.querySelector("h3").style.color = "#33B3FF"
+    } else if(type == "Aviso") {
+        div.style.borderColor = "#FFD93D"
+        div.querySelector("h3").style.color = "#FFD93D"
     }
 }
+
+document.addEventListener("DOMContentLoaded", () => {
+    const noticacoes = JSON.parse(localStorage.getItem("notificacoes"))
+    for(let i in noticacoes) {
+        noticacoes[i].forEach((e) => {
+            criarNotification(i, e)
+            noticacoes[i].shift()
+        })
+    }
+    localStorage.setItem("notificacoes", JSON.stringify(noticacoes))
+})
 
 
 async function verificar() {
     const response = await fetch('https://skillup-api-qxon.onrender.com/auth/me', {
     method: 'GET',
-    credentials:"include",
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("access-token")}`
     }
     })
     const data = await response.json();
@@ -74,9 +92,9 @@ async function verificar() {
 async function refreshToken() {
     const response = await fetch('https://skillup-api-qxon.onrender.com/auth/refresh', {
     method: 'GET',
-    credentials:"include",
     headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        "Authorization": `Bearer ${localStorage.getItem("refresh-token")}`
     }
     })
 
@@ -91,20 +109,23 @@ async function refreshToken() {
 async function login(email=document.getElementById("loginEmailInput").value, senha=document.getElementById("loginSenhaInput").value) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/login", {
         method: "POST",
-        credentials: "include",
         headers: {
-        "Content-Type": "application/json"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
-        "email": email,
-        "senha": senha
+            "email": email,
+            "senha": senha
         })
     });
 
     const data = await response.json();
     if (response.status == 200) {
-        console.log(data, response.status)
+        localStorage.setItem("refresh-token", data["refresh-token"])
+        localStorage.setItem("access-token", data["access-token"])
         window.location.href = "./";
+        const noticacoes = JSON.parse(localStorage.getItem("notificacoes")) || {"Sucesso": [], "Erro": [], "Informação": [], "Aviso": []}
+        noticacoes["Sucesso"].push("Login feito com sucesso")
+        localStorage.setItem("notificacoes", JSON.stringify(noticacoes))
     } else if (response.status == 400 || response.status == 404) {
         document.getElementById("mensagemErro").style.display = "block";
     }
@@ -142,15 +163,14 @@ function validarInfos() {
 async function signin(nome, email, senha, isProfessor) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/signin", {
         method: "POST",
-        credentials: "include",
         headers: {
-        "Content-Type": "application/json"
+            "Content-Type": "application/json"
         },
         body: JSON.stringify({
-        "nome": nome,
-        "email": email,
-        "senha": senha,
-        "isProfessor": isProfessor
+            "nome": nome,
+            "email": email,
+            "senha": senha,
+            "isProfessor": isProfessor
         })
     });
 
@@ -169,7 +189,6 @@ async function signin(nome, email, senha, isProfessor) {
 async function getInfos(idUser) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getinfo/${idUser}`, {
         method: 'GET',
-        credentials: "include",
         headers: {
             'Content-Type': 'application/json'
         }
@@ -202,13 +221,13 @@ async function editarPerfil() {
     if(desc.length <= 150) {
         const response = await fetch("https://skillup-api-qxon.onrender.com/profile/editarPerfil", {
             method: "PATCH",
-            credentials: "include",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("access-token")}`
             },
             body: JSON.stringify({
-            "nome": nome,
-            "desc": desc
+                "nome": nome,
+                "desc": desc
             })
         })
 
@@ -248,9 +267,8 @@ async function atualizarRanking() {
 async function getUserConquistas(idUser) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getUserConquistas/${idUser}`, {
         method: "GET",
-        credentials: "include",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
         },
     })
     const data = await response.json()
@@ -260,7 +278,6 @@ async function getUserConquistas(idUser) {
 async function atualizarConquistas(idUser) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/atualizarConquistas/${idUser}`, {
         method: "POST",
-        credentials: "include",
         headers: {
             'Content-Type': 'application/json'
         },
@@ -332,7 +349,8 @@ async function organizarRanking(espaco, type, query="") {
             const response = await fetch(`https://skillup-api-qxon.onrender.com/profile/getinfo/${verify["id"]}`, {
             method: 'GET',
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("access-token")}`
                 }
             })
     
@@ -477,9 +495,9 @@ async function editarSenha() {
     if(novaSenha == confirmNovaSenha) {
         const response = await fetch("https://skillup-api-qxon.onrender.com/auth/editarSenha", {
             method: "PATCH",
-            credentials: "include",
             headers: {
-                'Content-Type': 'application/json'
+                'Content-Type': 'application/json',
+                "Authorization": `Bearer ${localStorage.getItem("access-token")}`
             },
             body: JSON.stringify({
                 "senhaAtual": senha,
@@ -513,9 +531,9 @@ async function editarNome() {
 
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/editarNome", {
         method: "PATCH",
-        credentials: "include",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
         body: JSON.stringify({
             "novoNome": novoNome
@@ -535,34 +553,19 @@ async function editarNome() {
 }
 
 
-async function logout() {
-    const response = await fetch("https://skillup-api-qxon.onrender.com/auth/logout", {
-        method: "POST",
-        credentials: "include",
-        headers: {
-            'Content-Type': 'application/json'
-        },
-    })
-    const data = await response.json()
-
-    if(response.status == 200) {
-        window.location.href = "./"
-        console.log(data, response.status)
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
-        const refresh = await refreshToken()
-        if(refresh) {
-            logout()
-        }
-    }
+function logout() {
+    localStorage.removeItem("access-token")
+    localStorage.removeItem("refresh-token")
+    window.location.href = "./"
 }
 
 
 async function deletarConta() {
     const response = await fetch("https://skillup-api-qxon.onrender.com/auth/deletarConta", {
         method: "DELETE",
-        credentials: "include",
         headers: {
-            'Content-Type': 'application/json'
+            'Content-Type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
     })
     const data = await response.json()
@@ -609,9 +612,9 @@ async function validarTurmaInfos() {
 async function criarTurma(nome, senha, desc) {
     const response = await fetch("https://skillup-api-qxon.onrender.com/turmas/criar", {
         method: "POST",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
         body: JSON.stringify({
             "nome": nome,
@@ -652,9 +655,9 @@ async function listarTurmas(espaco, type, query="") {
 
     const response = await fetch("https://skillup-api-qxon.onrender.com/turmas/listarTurmas", {
         method: "GET",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         }
     })
     const data = await response.json()
@@ -742,9 +745,9 @@ async function listarTurmas(espaco, type, query="") {
 async function entrarTurma(idTurma, senha) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/entrar/${idTurma}`, {
         method: "POST",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
         body: JSON.stringify({
             senha: senha
@@ -777,9 +780,9 @@ async function entrarTurma(idTurma, senha) {
 async function sairTurma(idTurma) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/turmas/sair/${idTurma}`, {
         method: "DELETE",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         }
     })
     const data = response.json()
@@ -881,9 +884,9 @@ async function criarDesafio(idTurma) {
 
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/criar`, {
         method: "POST",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
         body: JSON.stringify({
             idTurma: idTurma,
@@ -930,9 +933,9 @@ async function criarDesafio(idTurma) {
 async function listarUserDesafios() {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/listar`, {
         method: "GET",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         }
     })
     const data = await response.json()
@@ -954,9 +957,9 @@ async function listarUserDesafios() {
 async function getDesafiosDiarios (idTurma) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/desafiosDiarios/${idTurma}`, {
         method: "GET",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         }
     })
     const data = await response.json()
@@ -1111,9 +1114,9 @@ async function getDesafiosDiarios (idTurma) {
 async function completarDesafio(idDesafio, condition) {
     const response = await fetch(`https://skillup-api-qxon.onrender.com/desafios/completar`, {
         method: "POST",
-        credentials: "include",
         headers: {
-            'content-type': 'application/json'
+            'content-type': 'application/json',
+            "Authorization": `Bearer ${localStorage.getItem("access-token")}`
         },
         body: JSON.stringify({
             idDesafio: idDesafio,

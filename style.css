@@ -87,7 +87,7 @@ nav a:hover {
 }
 
 .toastNotificationContent {
-    width: 36%;
+    width: 30%;
     display: flex;
     flex-flow: column-reverse;
     max-height: 15rem;
@@ -691,7 +691,7 @@ nav a:hover {
     display: flex;
     flex-flow: row wrap;
     justify-content: space-between;
-    align-items: stretch;
+    align-items: center;
     padding: 1rem;
     margin: 0.8rem;
     width: 66%;
