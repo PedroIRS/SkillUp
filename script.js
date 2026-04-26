@@ -94,12 +94,10 @@ async function verificar() {
     const data = await response.json();    
     if (response.status == 200) {
         return data
-    } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 &&  ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken();
-        if(refresh == true) {
+        if(refresh) {
             return verificar()
-        } else {
-            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
@@ -118,6 +116,8 @@ async function refreshToken() {
         localStorage.setItem("access-token", data)
         return true;
     } else {
+        localStorage.removeItem("access-token")
+        localStorage.removeItem("refresh-token")
         return false;
     }
 }
@@ -254,7 +254,7 @@ async function editarPerfil() {
             document.getElementById("editarDesc").style.display = "none"    
             document.getElementById("nivel").style.display = "inline-block"
             window.location.reload()
-        } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
             const refresh = await refreshToken()
             if(refresh) {
                 editarPerfil()
@@ -522,7 +522,7 @@ async function editarSenha() {
             document.getElementById("novaSenha").value = ""
             document.getElementById("confirmNovaSenha").value = ""
             criarNotification("Sucesso", "Senha alterada com sucesso")
-        } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
             const refresh = await refreshToken()
             if(refresh) {
                 editarSenha()
@@ -559,7 +559,7 @@ async function editarNome() {
 
     if(response.status == 200) {
         criarNotification("Sucesso", "Nome de usuário alterado com sucesso")
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             editarNome()
@@ -574,7 +574,6 @@ function logout() {
     localStorage.removeItem("access-token")
     localStorage.removeItem("refresh-token")
     window.location.href = "./"
-    criarNotificationToOtherPage("Informação", "Faça login para realizar desafios diarios")
 }
 
 
@@ -591,7 +590,7 @@ async function deletarConta() {
     if(response.status == 200) {
         window.location.href = "/"
         console.log(data, response.status)
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             deletarConta()
@@ -658,13 +657,12 @@ async function criarTurma(nome, senha, desc) {
             criarTurma.style.display = "none"
             professorTurmas.style.display = "flex"
         }
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             criarTurma(nome, senha, desc)
         } else {
-            window.location.href = "./"
-            criarNotificationToOtherPage("Aviso", "Faça login para acessar este conteúdo")
+            criarNotificationTo("Aviso", "Faça login para acessar este conteúdo")
         }
     } else if(response.status == 401 && data["detail"] == "Acesso restrito, apenas professores.") {
         criarNotification("Erro", "Somente professores podem realizar esta ação")
@@ -756,12 +754,10 @@ async function listarTurmas(espaco, type, query="") {
                 }
             }
         }
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             listarTurmas(espaco, type, query)
-        } else {
-            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     }
 }
@@ -784,15 +780,14 @@ async function entrarTurma(idTurma, senha) {
     if(response.status == 200) {
         console.log(data)
         window.location.reload()
+        criarNotificationToOtherPage("Sucesso", "Você entrou nesta turma")
         criarNotificationToOtherPage("Informação", "Complete desafios e evolua nesta turma")
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             entrarTurma(idTurma, senha)
         } else {
-            window.location.href = "./"
-            criarNotificationToOtherPage("Sucesso", "Você entrou nesta turma")
-            criarNotificationToOtherPage("Aviso", "Faça login para acessar este conteúdo")
+            criarNotification("Aviso", "Faça login para acessar este conteúdo")
         }
     } else if(response.status == 404) {
         criarNotification("Erro", "Turma não encontrada")
@@ -800,8 +795,6 @@ async function entrarTurma(idTurma, senha) {
         const mensagemErro = document.getElementById("mensagemErroTurmaSenha")
         mensagemErro.textContent = "senha incorreta"
         mensagemErro.style.display = "block"
-    } else {
-        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }
 
@@ -820,7 +813,7 @@ async function sairTurma(idTurma) {
         console.log("Sucesso")
         window.location.reload()
         criarNotificationToOtherPage("Sucesso", "Você saiu desta turma")
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             sairTurma(idTurma)
@@ -929,7 +922,7 @@ async function criarDesafio(idTurma) {
     if(response.status == 200) {
         criarNotification("Sucesso", "Desafio criado com secesso")
         return true
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             criarDesafio(idTurma)
@@ -948,7 +941,6 @@ async function criarDesafio(idTurma) {
         men.style.display = "block"
     } else if(response.status == 400 && data["detail"] == "Pergunta já registrada nesta turma") {
         const men = document.getElementById("menssagemErroDesafio")
-        criarNotification("Erro", "Pergunta já registrada nesta turma")
         men.textContent = "Pergunta já registrada nesta turma"
         men.style.display = "block"
     } else {
@@ -969,7 +961,7 @@ async function listarUserDesafios() {
     if(response.status == 200) {
         console.log(data)
         return data
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             listarUserDesafios()
@@ -991,8 +983,6 @@ async function getDesafiosDiarios (idTurma) {
     })
     const data = await response.json()
     if(response.status == 200) {
-        console.log(data)
-
         const numeroDesafios = data.length
         let results = {}
 
@@ -1022,9 +1012,7 @@ async function getDesafiosDiarios (idTurma) {
             item4Content.textContent = data[i]["item4"]
 
             itemCorreto.onclick = () => {
-                console.log("acertou")
                 results[data[i]["id"]] = true
-                console.log(results)
 
                 if(i + 1 < numeroDesafios) {
                     itemCorreto.style.backgroundColor = "#12363C"
@@ -1043,7 +1031,6 @@ async function getDesafiosDiarios (idTurma) {
             itens.forEach( (e) => {
                 if(e != itemCorreto) {
                     e.onclick = () => {
-                        console.log("erro")
                         results[data[i]["id"]] = false
                         console.log(results)
 
@@ -1123,7 +1110,7 @@ async function getDesafiosDiarios (idTurma) {
                 completarDesafio(i, results[i])
             }
         }
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             getDesafiosDiarios(idTurma)
@@ -1132,8 +1119,8 @@ async function getDesafiosDiarios (idTurma) {
             criarNotificationToOtherPage("Aviso", "Você não tem acesso este conteudo")
         }
     } else if(response.status == 404) {
+        criarNotificationToOtherPage("Informação", "Não há desafios nesta turma nesse momento")
         window.location.href = `./turma.html?id=${idTurma}`
-        criarNotificationToOtherPage("Informaçao", "Não há desafios nesta turma")
     }
 }
 
@@ -1152,8 +1139,8 @@ async function completarDesafio(idDesafio, condition) {
     })
     const data = await response.json()
     if(response.status == 200) {
-        console.log(data)
-    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado"].includes(data["detail"])) {
+        criarNotification("Sucesso", "Parabens, você completou os desafios desta turma")
+    } else if(response.status == 401 && ["Access token expirado", "Access token não encontrado", "Acesso negado"].includes(data["detail"])) {
         const refresh = await refreshToken()
         if(refresh) {
             completarDesafio(idDesafio, condition)
@@ -1161,7 +1148,5 @@ async function completarDesafio(idDesafio, condition) {
             window.location.href = "./"
             acriarNotificationToOtherPage("Aviso", "Você não tem acesso este conteudo")
         }
-    } else {
-        criarNotification("Aviso", "Você não tem permissão para realizar esta ação")
     }
 }

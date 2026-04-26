@@ -149,9 +149,22 @@
             criarDesafioBtt.addEventListener("click", async () => {
                 const respostaItem = document.getElementById("itemCorretoInput").value
                 if(["1", "2", "3", "4"].includes(respostaItem)) {
-                    const resp = await criarDesafio(idTurma)
-                    if(resp) {
-                        criarDesafioInterface()
+                    const itens = [
+                        document.getElementById("item1Input").value,
+                        document.getElementById("item2Input").value,
+                        document.getElementById("item3Input").value,
+                        document.getElementById("item4Input").value,
+                    ]
+
+                    if(!itens.includes("")) {
+                        const resp = await criarDesafio(idTurma)
+                        if(resp) {
+                            criarDesafioInterface()
+                        }
+                    } else {
+                        const men = document.getElementById("menssagemErroDesafio")
+                        men.textContent = "Não deve haver itens vazios"
+                        men.style.display = "block"
                     }
                 } else {
                     const men = document.getElementById("menssagemErroDesafio")

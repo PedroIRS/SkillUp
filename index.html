@@ -121,6 +121,11 @@
             listarTurmas("entrarTurmaInterfaceContent", "entrarTurma")
             listarTurmas("professorTurmasContent", "professorTurmas")
 
+            const verify = await verificar()
+            if(!verify) {
+                criarNotification("Informação", "Faça login para realizar desafios diarios")
+            }
+
             const pesquisaTurmaInput = document.getElementById("pesquisaTurmaInput")
             pesquisaTurmaInput.addEventListener("input", () => {
                 listarTurmas("entrarTurmaInterfaceContent", "query", pesquisaTurmaInput.value)
