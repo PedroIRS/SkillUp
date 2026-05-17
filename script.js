@@ -1,5 +1,4 @@
-upNav()
-
+window.onload = window.location.href = "https://skillup-sigma-five.vercel.app/"
 
 async function upNav() {
     const verify = await verificar()
